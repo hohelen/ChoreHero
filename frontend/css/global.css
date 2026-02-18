@@ -1,0 +1,14 @@
+body {
+    background-color: #f5ece4;
+    font-family: "Lexend Deca", sans-serif;
+}
+
+.submit-button {
+    background-color: #a59484;
+    color: #f5ece4;
+    width: 850px;
+    height: 150px;
+    border-radius: 100px;
+    font-size: 45px;
+    font-weight: 500;
+}
