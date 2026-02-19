@@ -32,6 +32,10 @@
     margin-bottom: 0px;
 }
 
+#login-form .submit-button {
+    margin-top: 380px;
+}
+
 .form-comp {
     margin-bottom: 10px;
 }
@@ -51,7 +55,7 @@
     border-width: 0px;
     border-radius: 30px;
     padding-left: 35px;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     font-family: "Lexend Deca", sans-serif;
     font-size: 30px;
     font-weight: 500;
