@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Manage View</title>
+        <link rel="stylesheet" href="../../css/global.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet" />
+        <!-- Move to global css file -->
+    </head>
+    <!-- group header -->
+    <body>
+        <!-- Placeholder Group Name/Header -->
+        <h1 id="groupName">Li Residence</h1>
+        <h2>Manage View</h2>
+        <!-- Buttons -->
+        <button>Group Roster</button><br />
+        <button>Customize Group</button><br />
+        <button>Leave Group</button><br />
+        <!-- Admin only buttons -->
+        <button>Create Task</button>
+        <button>Assign Task</button>
+        <!-- bottom navbar - placeholder groupId=1; move this to a components folder so can be reused on diff pages -->
+        <nav class="bottom-navbar">
+            <a href="personal-task.html?groupId=1" class="navbar-icon">
+                <img src="../../assets/personal-task.png" alt="Personal Task Icon" />
+            </a>
+            <a href="group-task.html?groupId=1" class="navbar-icon">
+                <img src="../../assets/group-task.png" alt="Group Task Icon" />
+            </a>
+            <a href="manage-view.html?groupId=1" class="navbar-icon">
+                <img src="../../assets/admin.png" alt="Admin Icon" />
+            </a>
+        </nav>
+    </body>
+</html>
