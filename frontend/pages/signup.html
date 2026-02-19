@@ -7,35 +7,37 @@
         <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet" />
         <script src="../js/signup.js"></script>
     </head>
-    <body class="center-page">
+    <body>
         <div class="general-header">
             <a href="landing.html">
                 <img src="../assets/back-arrow.png" alt="Back Arrow" />
             </a>
         </div>
-        <div class="logo-header">
-            <img src="../assets/chorehero-logo.png" alt="ChoreHero Logo" class="signup-login-logo" />
-            <h1>Sign Up</h1>
+        <div class="center-page">
+            <div class="logo-header">
+                <img src="../assets/chorehero-logo.png" alt="ChoreHero Logo" class="signup-login-logo" />
+                <h1>Sign Up</h1>
+            </div>
+            <form id="signup-form">
+                <div class="form-comp">
+                    <p class="comp-title">Name</p>
+                    <input type="text" id="name" placeholder="Name" />
+                </div>
+                <div class="form-comp">
+                    <p class="comp-title">Email</p>
+                    <input type="email" id="email" placeholder="Email" />
+                </div>
+                <div class="form-comp">
+                    <p class="comp-title">Password</p>
+                    <input type="password" id="password" placeholder="Password" /><br />
+                    <input type="password" id="confirm-password" placeholder="Confirm Password" />
+                </div>
+                <input type="button" class="submit-button" value="Sign Up" onclick="signup()" />
+            </form>
+            <p class="signup-login-link">
+                ALREADY HAVE AN ACCOUNT?
+                <span><a href="login.html">LOG IN</a></span>
+            </p>
         </div>
-        <form id="signup-form">
-            <div class="form-comp">
-                <p class="comp-title">Name</p>
-                <input type="text" id="name" placeholder="Name" />
-            </div>
-            <div class="form-comp">
-                <p class="comp-title">Email</p>
-                <input type="email" id="email" placeholder="Email" />
-            </div>
-            <div class="form-comp">
-                <p class="comp-title">Password</p>
-                <input type="password" id="password" placeholder="Password" /><br />
-                <input type="password" id="confirm-password" placeholder="Confirm Password" />
-            </div>
-            <input type="button" class="submit-button" value="Sign Up" onclick="signup()" />
-        </form>
-        <p class="signup-login-link">
-            ALREADY HAVE AN ACCOUNT?
-            <span><a href="login.html">LOG IN</a></span>
-        </p>
     </body>
 </html>
