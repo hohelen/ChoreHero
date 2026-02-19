@@ -3,31 +3,64 @@
     <head>
         <title>Manage View</title>
         <link rel="stylesheet" href="../../css/global.css" />
+        <link rel="stylesheet" href="../../css/manage-view.css" />
         <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet" />
-        <!-- Move to global css file -->
     </head>
-    <!-- group header -->
     <body>
         <!-- Placeholder Group Name/Header -->
-        <h1 id="groupName">Li Residence</h1>
-        <h2>Manage View</h2>
-        <!-- Buttons -->
-        <button>Group Roster</button><br />
-        <button>Customize Group</button><br />
-        <button>Leave Group</button><br />
-        <!-- Admin only buttons -->
-        <button>Create Task</button>
-        <button>Assign Task</button>
+        <!-- top navbar - -->
+        <nav class="top-navbar">
+            <a href="../group-view.html" class="navbar-icon">
+                <img src="../../assets/home-icon.png" alt="Home" />
+            </a>
+            <h1 id="group-name">Li Residence</h1>
+            <a href="../group-view.html" class="navbar-icon">
+                <img src="../../assets/hub-icon.png" alt="Hub" />
+            </a>
+            <br />
+        </nav>
+
+        <ul class="manage-buttons">
+            <li>
+                <button class="button" onclick="">Group Roster</button>
+            </li>
+            <li>
+                <button class="button" onclick="">Customize Group</button>
+            </li>
+            <li>
+                <button class="button" onclick="">Leave Group</button>
+            </li>
+            <!-- Admin only buttons -->
+            <li>
+                <button class="button" onclick="">Create Task</button>
+            </li>
+            <li>
+                <button class="button" onclick="">Assign Task</button>
+            </li>
+            <li>
+                <button class="button" onclick="">Add Member</button>
+            </li>
+            <li>
+                <button class="button" onclick="">Remove Member</button>
+            </li>
+            <li>
+                <button class="button" onclick="">Add Admin</button>
+            </li>
+            <li>
+                <button class="button" onclick="">Remove Admin</button>
+            </li>
+        </ul>
+
         <!-- bottom navbar - placeholder groupId=1; move this to a components folder so can be reused on diff pages -->
         <nav class="bottom-navbar">
             <a href="personal-task.html?groupId=1" class="navbar-icon">
-                <img src="../../assets/personal-task.png" alt="Personal Task Icon" />
+                <img src="../../assets/personal-task.png" alt="Personal Task View" />
             </a>
             <a href="group-task.html?groupId=1" class="navbar-icon">
-                <img src="../../assets/group-task.png" alt="Group Task Icon" />
+                <img src="../../assets/group-task.png" alt="Group Task View" />
             </a>
             <a href="manage-view.html?groupId=1" class="navbar-icon">
-                <img src="../../assets/admin.png" alt="Admin Icon" />
+                <img src="../../assets/admin.png" alt="Admin View" />
             </a>
         </nav>
     </body>
