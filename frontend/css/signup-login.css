@@ -36,33 +36,3 @@
 #login-form .submit-button {
     margin-top: 380px;
 }
-
-.form-comp {
-    margin-bottom: 10px;
-}
-
-.comp-title {
-    font-size: 30px;
-    color: #3d352f;
-    font-weight: 750;
-    margin-top: 5px;
-    margin-bottom: 20px;
-}
-
-.form-comp input {
-    height: 130px;
-    width: 850px;
-    background-color: #fffbf8;
-    border-width: 0px;
-    border-radius: 30px;
-    padding-left: 35px;
-    margin-bottom: 25px;
-    font-family: "Lexend Deca", sans-serif;
-    font-size: 30px;
-    font-weight: 500;
-    color: #a59484;
-}
-
-.form-comp input::placeholder {
-    color: #a59484;
-}

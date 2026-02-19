@@ -6,6 +6,15 @@
         <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet" />
     </head>
     <body>
-        <h1 class="group-creation-title">Create or Join Group</h1>
+        <div class="general-header">
+            <a href="group-view.html">
+                <img src="../assets/back-arrow.png" alt="Back Arrow" />
+            </a>
+        </div>
+        <div class="center-page">
+            <h1 class="create-join-group-title">Create or Join Group</h1>
+            <input type="button" class="submit-button create-join-group-button" value="Create Group" onclick="window.location.href = 'create-group.html'" />
+            <input type="button" class="submit-button create-join-group-button" value="Join Group" onclick="window.location.href = 'join-group.html'" />
+        </div>
     </body>
 </html>
