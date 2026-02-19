@@ -1,16 +1,43 @@
 body {
+    margin: 0;
+    padding: 0;
     background-color: #f5ece4;
     font-family: "Lexend Deca", sans-serif;
+    overflow: hidden;
+}
+
+html {
+    overflow-y: scroll;
+}
+
+.center-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .submit-button {
+    font-family: "Lexend Deca", sans-serif;
     background-color: #a59484;
     color: #f5ece4;
     width: 850px;
     height: 150px;
     border-radius: 100px;
+    border-width: 0px;
     font-size: 45px;
     font-weight: 500;
+}
+
+.general-header {
+    width: 100%;
+    padding-left: 100px;
+}
+
+/* back button */
+.general-header img {
+    width: 45px;
+    height: auto;
 }
 
 .bottom-navbar {

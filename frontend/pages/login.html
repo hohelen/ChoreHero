@@ -3,30 +3,31 @@
         <title>Login</title>
         <link rel="stylesheet" href="../css/global.css" />
         <link rel="stylesheet" href="../css/login.css" />
+        <link rel="stylesheet" href="../css/signup-login.css" />
         <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet" />
         <script src="../js/login.js"></script>
     </head>
-    <body>
+    <body class="center-page">
         <div class="general-header">
             <a href="landing.html">
                 <img src="../assets/back-arrow.png" alt="Back Arrow" />
             </a>
         </div>
         <div class="logo-header">
-            <img src="../assets/chorehero-logo.png" alt="ChoreHero Logo" class="logo" />
+            <img src="../assets/chorehero-logo.png" alt="ChoreHero Logo" class="signup-login-logo" />
             <h1>Log In</h1>
         </div>
-        <form>
+        <form id="login-form">
             <div class="form-comp">
                 <p class="comp-title">Email</p>
-                <input type="email" id="email" value="Email" />
+                <input type="email" id="email" placeholder="Email" />
             </div>
             <div class="form-comp">
                 <p class="comp-title">Password</p>
-                <input type="text" id="password" value="Password" /><br />
+                <input type="text" id="password" placeholder="Password" /><br />
             </div>
             <input type="button" class="submit-button" value="Log In" onclick="login()" />
-            <p>
+            <p class="signup-login-link">
                 DON'T HAVE AN ACCOUNT?
                 <span><a href="signup.html">SIGN UP</a></span>
             </p>
