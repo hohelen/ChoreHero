@@ -41,6 +41,37 @@ html {
     height: auto;
 }
 
+.button {
+    background-color: #d8c4b2;
+    color: #655b53;
+    width: 850px;
+    height: 150px;
+    border-radius: 20px;
+    font-size: 45px;
+    font-weight: 500;
+}
+
+.top-navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.top-navbar a {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    height: 60px;
+    width: 60px;
+}
+.top-navbar h1 {
+    font-size: 60px;
+}
+
 .bottom-navbar {
     display: flex;
     justify-content: center;
