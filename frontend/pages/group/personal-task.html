@@ -5,18 +5,21 @@
         <link rel="stylesheet" href="../../css/personal-task.css" />
         <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet" />
     </head>
-    <body class="personal-tasks-page">
-        <!-- top navbar - -->
+    <body>
+        <!-- Placeholder Group Name and Header -->
         <nav class="top-navbar">
-            <a href="../group-view.html" class="navbar-icon">
-                <img src="../../assets/home-icon.png" alt="Home" />
-            </a>
-            <h1 id="group-name">Li Residence</h1>
-            <a href="../hub.html" class="navbar-icon">
-                <img src="../../assets/hub-icon.png" alt="Hub" />
-            </a>
+            <div class="nav-row">
+                <a href="../group-view.html" class="navbar-icon">
+                    <img src="../../assets/home-icon.png" alt="Home" />
+                </a>
+                <h1 id="group-name">Li Residence</h1>
+                <a href="../hub.html" class="navbar-icon">
+                    <img src="../../assets/hub-icon.png" alt="Hub" />
+                </a>
+            </div>
+            <hr />
+            <h2 id="page-title">Personal Tasks</h2>
         </nav>
-        <h2>Personal Tasks</h2>
         <!-- bottom navbar - placeholder groupId=1; move this to a components folder so can be reused on diff pages -->
         <nav class="bottom-navbar">
             <a href="personal-task.html?groupId=1" class="navbar-icon">
@@ -29,5 +32,6 @@
                 <img src="../../assets/admin.png" alt="Admin View" />
             </a>
         </nav>
+        <div class="page-content"></div>
     </body>
 </html>

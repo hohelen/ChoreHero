@@ -1,12 +1,25 @@
-.manage-buttons {
+.page-content {
+    padding: 200px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    list-style-type: none;
-
-    padding: 0;
+    font-size: 25px;
 }
-li {
-    margin: 10px 0;
+
+.manage-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    gap: 15px;
+    font-size: 20px;
+}
+
+.manage-buttons .button {
+    text-align: left;
+    padding-left: 50px;
 }

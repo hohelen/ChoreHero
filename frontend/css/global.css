@@ -50,26 +50,49 @@ html {
     font-size: 45px;
     font-weight: 500;
 }
-
+/* contains navbar, hr, page title */
 .top-navbar {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     position: fixed;
+    top: 0;
     left: 0;
     right: 0;
-    top: 0;
+    padding: 30px 0 10px 0;
 }
-
+/* buttons in top nav bar */
 .top-navbar a {
     display: flex;
-    justify-content: center;
-    flex: 1;
     height: 60px;
     width: 60px;
 }
+/* group name in header */
 .top-navbar h1 {
     font-size: 60px;
+    margin: 0;
+    text-align: center;
+    color: #3d352f;
+}
+.top-navbar hr {
+    width: 85%;
+    height: 4px;
+    background-color: #a59484;
+    border: none;
+    margin-top: 10px;
+}
+/* contains only home button, group name, hub button */
+.nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 800px;
+}
+#page-title {
+    font-size: 45px;
+    color: #3d352f;
+    margin-top: 5px;
 }
 
 .bottom-navbar {
