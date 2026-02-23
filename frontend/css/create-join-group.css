@@ -1,0 +1,22 @@
+.create-join-group-title {
+    font-size: 50px;
+    margin-bottom: 75px;
+    color: #3d352f;
+}
+
+.join-group-title,
+.create-group-title {
+    font-size: 45px;
+    margin: 0;
+    font-weight: 600;
+    color: #3d352f;
+}
+
+.create-join-group-button {
+    margin-bottom: 40px;
+}
+
+#create-group-form .submit-button,
+#join-group-form .submit-button {
+    margin-top: 1000px;
+}
