@@ -1,3 +1,14 @@
+:root {
+    --color-red: #ec9597;
+    --color-red-orange: #f3a893;
+    --color-orange: #fec183;
+    --color-yellow: #fedb87;
+    --color-green: #c2e3a8;
+    --color-blue: #a6c6df;
+    --color-blue-purple: #a6b1eb;
+    --color-purple: #cbb6e6;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -92,7 +103,7 @@ html {
     height: auto;
 }
 
-.button {
+/* .button {
     background-color: #d8c4b2;
     color: #655b53;
     width: 850px;
@@ -100,7 +111,7 @@ html {
     border-radius: 20px;
     font-size: 45px;
     font-weight: 500;
-}
+} */
 /* contains navbar, hr, page title */
 .top-navbar {
     background-color: #f5ece4;
@@ -202,19 +213,23 @@ html {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     list-style-type: none;
     padding: 0;
     margin: 0;
-    gap: 30px;
+    gap: 33px;
 }
 
-.buttons-list .button {
+.button {
+    background-color: #d8c4b2;
+    color: #655b53;
     text-align: left;
     padding-left: 50px;
+    width: 850px;
     height: 135px;
     font-family: "Lexend Deca", sans-serif;
     font-weight: 450;
     font-size: 40px;
     border-width: 0px;
+    border-radius: 25px;
 }
