@@ -6,3 +6,22 @@
     align-items: center;
     font-size: 25px;
 }
+
+.group-button {
+    color: #3d352f;
+}
+
+.plus-button {
+    font-family: "Lexend Deca", sans-serif;
+    background-color: #a59484;
+    height: 135px;
+    width: 135px;
+    border-width: 0px;
+    border-radius: 70px;
+}
+
+.plus-icon-img {
+    width: 35px;
+    height: auto;
+    margin-top: 10px;
+}
