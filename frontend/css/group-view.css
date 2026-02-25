@@ -1,0 +1,8 @@
+.group-view-page-content {
+    padding: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+}
