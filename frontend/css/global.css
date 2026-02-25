@@ -141,7 +141,7 @@ html {
     color: #3d352f;
 }
 .top-navbar hr {
-    width: 85%;
+    width: 90%;
     height: 4px;
     background-color: #a59484;
     border: none;
@@ -157,6 +157,7 @@ html {
 }
 #page-title {
     font-size: 45px;
+    font-weight: 600;
     color: #3d352f;
     margin-top: 20px;
 }
@@ -182,18 +183,23 @@ html {
 }
 
 .personal-task-icon {
-    height: 70px;
-    width: 70px;
+    height: 95px;
+    width: auto;
 }
 
 .group-task-icon {
-    height: 70px;
-    width: 100px;
+    height: 120px;
+    width: auto;
 }
 
 .manage-view-icon {
-    height: 70px;
-    width: 7cap;
+    height: 100px;
+    width: auto;
+}
+
+.logout-icon {
+    height: 60px;
+    width: auto;
 }
 
 .bottom-navbar a.active {
@@ -229,7 +235,7 @@ html {
     height: 135px;
     font-family: "Lexend Deca", sans-serif;
     font-weight: 450;
-    font-size: 40px;
+    font-size: 38px;
     border-width: 0px;
     border-radius: 25px;
 }
