@@ -103,6 +103,7 @@ html {
 }
 /* contains navbar, hr, page title */
 .top-navbar {
+    background-color: #f5ece4;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -110,13 +111,16 @@ html {
     top: 0;
     left: 0;
     right: 0;
-    padding: 30px 0 10px 0;
+    padding-top: 30px;
 }
 /* buttons in top nav bar */
-.top-navbar a {
-    display: flex;
-    height: 60px;
-    width: 60px;
+.home-icon {
+    height: 70px;
+    width: 70px;
+}
+.hub-icon {
+    height: 75px;
+    width: 70px;
 }
 /* group name in header */
 .top-navbar h1 {
@@ -130,7 +134,7 @@ html {
     height: 4px;
     background-color: #a59484;
     border: none;
-    margin-top: 10px;
+    margin-top: 25px;
 }
 /* contains only home button, group name, hub button */
 .nav-row {
@@ -143,7 +147,7 @@ html {
 #page-title {
     font-size: 45px;
     color: #3d352f;
-    margin-top: 5px;
+    margin-top: 20px;
 }
 
 .bottom-navbar {
@@ -151,7 +155,7 @@ html {
     justify-content: center;
     align-items: center;
     background-color: #d8c4b2;
-    height: 100px;
+    height: 140px;
     position: fixed;
     left: 0;
     right: 0;
@@ -161,13 +165,32 @@ html {
 .bottom-navbar a {
     display: flex;
     justify-content: center;
+    align-items: center;
     flex: 1;
-    height: 60px;
-    width: 60px;
+    height: 100%;
+}
+
+.personal-task-icon {
+    height: 70px;
+    width: 70px;
+}
+
+.group-task-icon {
+    height: 70px;
+    width: 100px;
+}
+
+.manage-view-icon {
+    height: 70px;
+    width: 7cap;
+}
+
+.bottom-navbar a.active {
+    background-color: #a59484;
 }
 
 .page-content {
-    padding: 250px;
+    padding: 260px;
     display: flex;
     flex-direction: column;
     justify-content: center;
