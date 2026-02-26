@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <title>Create Task</title>
+        <link rel="stylesheet" href="../../css/global.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet" />
+        <script defer src="../../js/components/top-navbar.js"></script>
+        <script defer src="../../js/components/bottom-navbar.js"></script>
+    </head>
+    <!-- navbar needs back arrow-->
+    <body data-navbar-type="group-specific" data-group-id="1" data-group-name="Li Residence" data-page-title="Create Task">
+        <div id="top-navbar"></div>
+    <div class="page-content">
+        <form id="create-task-form">
+                <div class="form-comp">
+                    <p class="comp-title">Task Name</p>
+                    <input type="text" id="task-name" placeholder="Task Name" />
+                </div>
+                <input type="button" class="submit-button" value="Create Task" onclick="createTask()" />
+            </form>
+        <div id="bottom-navbar"></div>
+    </body>
+</html>
