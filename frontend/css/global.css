@@ -239,3 +239,73 @@ html {
     border-width: 0px;
     border-radius: 25px;
 }
+
+/* task component for hub tasks, personal tasks, and group tasks */
+.task-comp {
+    display: flex;
+    gap: 40px;
+    position: relative;
+    background-color: var(--color-red-orange);
+    color: #655b53;
+    text-align: left;
+    padding-left: 50px;
+    width: 850px;
+    height: 135px;
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 450;
+    font-size: 38px;
+    border-width: 0px;
+    border-radius: 25px;
+}
+
+/* this class should only appear if the task is completed */
+.task-complete {
+    opacity: 0.5;
+}
+
+/* this class should only appear if the task is completed */
+.task-comp-strike {
+    position: absolute;
+    left: 30px;
+    right: 30px;
+    top: 50%;
+    height: 5px;
+    border-radius: 10px;
+    background-color: #655b53;
+    border: none;
+    z-index: 2;
+    opacity: 1;
+}
+
+.task-comp-date {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #655b53;
+}
+
+.task-comp-day-of-wk {
+    font-size: 36px;
+}
+
+.task-comp-date-of-mo {
+    font-size: 36px;
+}
+
+.task-comp-detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.task-comp-user-or-group {
+    font-size: 36px;
+    color: #655b53;
+}
+
+.task-comp-name {
+    font-weight: 600;
+    font-size: 42px;
+    color: #3d352f;
+}
