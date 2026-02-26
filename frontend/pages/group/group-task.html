@@ -3,22 +3,11 @@
         <title>Group Tasks</title>
         <link rel="stylesheet" href="../../css/global.css" />
         <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet" />
+        <script defer src="../../js/components/top-navbar.js"></script>
     </head>
-    <body>
-        <!-- Placeholder Group Name and Header -->
-        <nav class="top-navbar">
-            <div class="nav-row">
-                <a href="../group-view.html" class="navbar-icon">
-                    <img class="home-icon" src="../../assets/home-icon.png" alt="Home" />
-                </a>
-                <h1 id="group-name">Li Residence</h1>
-                <a href="../hub.html" class="navbar-icon">
-                    <img class="hub-icon" src="../../assets/hub-icon.png" alt="Hub" />
-                </a>
-            </div>
-            <hr />
-            <h2 id="page-title">Group Tasks</h2>
-        </nav>
+    <!-- Once group creation is finished, call a function that gets the group's ID and name instead-->
+    <body data-group-id="1" data-group-name="Li Residence" data-page-title="Group Tasks">
+        <div id="top-navbar"></div>
         <!-- bottom navbar - placeholder groupId=1; move this to a components folder so can be reused on diff pages -->
         <nav class="bottom-navbar">
             <a href="personal-task.html?groupId=1" class="navbar-icon">
