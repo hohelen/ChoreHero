@@ -1,8 +1,8 @@
 // general top navbar (home button, group name, hub button, page title)
-function loadNavbar({ groupId, pageTitle, groupName }) {
+function loadTopNavbar({ groupId, pageTitle, groupName }) {
     var container = document.getElementById("top-navbar");
     if (!container) {
-        console.error("Navbar container not found");
+        console.error("Top navbar container not found");
         return;
     }
     container.innerHTML = `
@@ -48,7 +48,7 @@ function loadGroupViewNavbar({ pageTitle }) {
 document.addEventListener("DOMContentLoaded", function () {
     const { navbarType, groupId, pageTitle, groupName } = document.body.dataset;
     if (navbarType === "group-specific") {
-        loadNavbar({ groupId, pageTitle, groupName });
+        loadTopNavbar({ groupId, pageTitle, groupName });
     } else if (navbarType === "group-view") {
         loadGroupViewNavbar({ pageTitle });
     }
