@@ -1,3 +1,14 @@
+:root {
+    --color-red: #ec9597;
+    --color-red-orange: #f3a893;
+    --color-orange: #fec183;
+    --color-yellow: #fedb87;
+    --color-green: #c2e3a8;
+    --color-blue: #a6c6df;
+    --color-blue-purple: #a6b1eb;
+    --color-purple: #cbb6e6;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -92,7 +103,7 @@ html {
     height: auto;
 }
 
-.button {
+/* .button {
     background-color: #d8c4b2;
     color: #655b53;
     width: 850px;
@@ -100,9 +111,10 @@ html {
     border-radius: 20px;
     font-size: 45px;
     font-weight: 500;
-}
+} */
 /* contains navbar, hr, page title */
 .top-navbar {
+    background-color: #f5ece4;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -110,13 +122,16 @@ html {
     top: 0;
     left: 0;
     right: 0;
-    padding: 30px 0 10px 0;
+    padding-top: 30px;
 }
 /* buttons in top nav bar */
-.top-navbar a {
-    display: flex;
-    height: 60px;
-    width: 60px;
+.home-icon {
+    height: 70px;
+    width: 70px;
+}
+.hub-icon {
+    height: 75px;
+    width: 70px;
 }
 /* group name in header */
 .top-navbar h1 {
@@ -126,11 +141,11 @@ html {
     color: #3d352f;
 }
 .top-navbar hr {
-    width: 85%;
+    width: 90%;
     height: 4px;
     background-color: #a59484;
     border: none;
-    margin-top: 10px;
+    margin-top: 25px;
 }
 /* contains only home button, group name, hub button */
 .nav-row {
@@ -142,8 +157,9 @@ html {
 }
 #page-title {
     font-size: 45px;
+    font-weight: 600;
     color: #3d352f;
-    margin-top: 5px;
+    margin-top: 20px;
 }
 
 .bottom-navbar {
@@ -151,7 +167,7 @@ html {
     justify-content: center;
     align-items: center;
     background-color: #d8c4b2;
-    height: 100px;
+    height: 140px;
     position: fixed;
     left: 0;
     right: 0;
@@ -161,13 +177,37 @@ html {
 .bottom-navbar a {
     display: flex;
     justify-content: center;
+    align-items: center;
     flex: 1;
+    height: 100%;
+}
+
+.personal-task-icon {
+    height: 95px;
+    width: auto;
+}
+
+.group-task-icon {
+    height: 120px;
+    width: auto;
+}
+
+.manage-view-icon {
+    height: 100px;
+    width: auto;
+}
+
+.logout-icon {
     height: 60px;
-    width: 60px;
+    width: auto;
+}
+
+.bottom-navbar a.active {
+    background-color: #a59484;
 }
 
 .page-content {
-    padding: 250px;
+    padding: 260px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -179,19 +219,23 @@ html {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     list-style-type: none;
     padding: 0;
     margin: 0;
-    gap: 30px;
+    gap: 33px;
 }
 
-.buttons-list .button {
+.button {
+    background-color: #d8c4b2;
+    color: #655b53;
     text-align: left;
     padding-left: 50px;
+    width: 850px;
     height: 135px;
     font-family: "Lexend Deca", sans-serif;
     font-weight: 450;
-    font-size: 40px;
+    font-size: 38px;
     border-width: 0px;
+    border-radius: 25px;
 }
