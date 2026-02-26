@@ -1,8 +1,8 @@
-// pass group name and page name
-function loadNavbar({ groupId, pageTitle, groupName }) {
+// general top navbar (home button, group name, hub button, page title)
+function loadTopNavbar({ groupId, pageTitle, groupName }) {
     var container = document.getElementById("top-navbar");
     if (!container) {
-        console.error("Navbar container not found");
+        console.error("Top navbar container not found");
         return;
     }
     container.innerHTML = `
@@ -22,7 +22,34 @@ function loadNavbar({ groupId, pageTitle, groupName }) {
     `;
 }
 
+// top navbar for group view (logout button, "My Groups", hub button)
+function loadGroupViewNavbar({ pageTitle }) {
+    var container = document.getElementById("top-navbar");
+    if (!container) {
+        console.error("Navbar container not found");
+        return;
+    }
+    container.innerHTML = ` 
+    <nav class="top-navbar">
+            <div class="nav-row">
+                <a href="../pages/landing.html" class="navbar-icon">
+                    <img class="logout-icon" src="../assets/logout-icon.png" alt="Log Out" />
+                </a>
+                <h1>My Groups</h1>
+                <a href="../pages/hub.html" class="navbar-icon">
+                    <img class="hub-icon" src="../assets/hub-icon.png" alt="Hub" />
+                </a>
+            </div>
+            <hr />
+        </nav>
+        `;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
-    const { groupId, pageTitle, groupName } = document.body.dataset;
-    loadNavbar({ groupId, pageTitle, groupName });
+    const { navbarType, groupId, pageTitle, groupName } = document.body.dataset;
+    if (navbarType === "group-specific") {
+        loadTopNavbar({ groupId, pageTitle, groupName });
+    } else if (navbarType === "group-view") {
+        loadGroupViewNavbar({ pageTitle });
+    }
 });
