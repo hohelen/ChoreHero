@@ -123,6 +123,7 @@ html {
     left: 0;
     right: 0;
     padding-top: 30px;
+    z-index: 1;
 }
 /* buttons in top nav bar */
 .home-icon {
