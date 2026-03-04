@@ -134,6 +134,10 @@ html {
     height: 75px;
     width: 70px;
 }
+.back-icon {
+    height: 45px;
+    width: auto;
+}
 /* group name in header */
 .top-navbar h1 {
     font-size: 60px;
@@ -148,6 +152,7 @@ html {
     border: none;
     margin-top: 25px;
 }
+
 /* contains only home button, group name, hub button */
 .nav-row {
     display: flex;
@@ -155,6 +160,29 @@ html {
     justify-content: space-between;
     width: 100%;
     max-width: 800px;
+}
+/* contains back button and page title */
+.title-row {
+    display: grid;
+    grid-template-columns: 45px 1fr 45px;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    padding-top: 10px;
+    margin-top: 20px;
+}
+.title-row a {
+    grid-column: 1;
+    justify-self: start;
+}
+.title-row #page-title {
+    grid-column: 2;
+    text-align: center;
+    margin: 0;
+}
+.spacer {
+    height: 45px;
+    width: auto;
 }
 #page-title {
     font-size: 45px;
