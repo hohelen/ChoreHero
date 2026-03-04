@@ -38,8 +38,10 @@ async function signup() {
 
         if (res.ok) {
             // Save user info for use across pages
+            localStorage.setItem("token", data.token);
             localStorage.setItem("user", JSON.stringify(data.user));
-            window.location.href = "hub.html";
+
+            window.location.href = "group-view.html";
         } else {
             // "Email already registered" or other backend errors shown here
             alert(data.detail || "Sign up failed. Please try again.");

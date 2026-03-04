@@ -20,10 +20,10 @@ async function login() {
 
         if (res.ok) {
             // Save user info for use across pages
+            localStorage.setItem("token", data.token);
             localStorage.setItem("user", JSON.stringify(data.user));
 
-            // Redirect to hub
-            window.location.href = "hub.html";
+            window.location.href = "group-view.html";
         } else {
             // "Invalid email or password" shown here
             alert(data.detail || "Login failed. Please try again.");

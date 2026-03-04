@@ -6,28 +6,17 @@
         <link rel="stylesheet" href="../css/group-view.css" />
         <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet" />
         <script defer src="../js/components/top-navbar.js"></script>
+        <script src="../js/api/auth.js"></script>
+        <script defer src="../js/pages/group-view.js"></script>
     </head>
     <body data-navbar-type="group-view">
         <div id="top-navbar"></div>
         <div class="group-view-page-content">
-            <ul class="buttons-list">
+            <ul class="buttons-list" id="group-list">
                 <li>
-                    <button class="button group-button" style="background-color: var(--color-red-orange)" onclick="">Li Residence</button>
-                </li>
-                <li>
-                    <button class="button group-button" style="background-color: var(--color-yellow)" onclick="">Gainesville Apt</button>
-                </li>
-                <li>
-                    <button class="button group-button" style="background-color: var(--color-blue)" onclick="">Reitz Union Hotel</button>
-                </li>
-                <li>
-                    <button class="button group-button" style="background-color: var(--color-green)" onclick="">Nguyen House</button>
-                </li>
-                <li>
-                    <button class="button group-button" style="background-color: var(--color-purple)" onclick="">Ho Residence</button>
-                </li>
-                <li>
-                    <button class="plus-button" onclick="window.location.href = 'create-join-group.html'"><img src="../assets/plus-icon.png" alt="Create or Join Group Button" class="plus-icon-img" /></button>
+                    <button class="plus-button" onclick="window.location.href = 'create-join-group.html'">
+                        <img src="../assets/plus-icon.png" alt="Create or Join Group Button" class="plus-icon-img" />
+                    </button>
                 </li>
             </ul>
         </div>
