@@ -14,7 +14,6 @@ function loadTopNavbar({ groupId, pageTitle, groupName, showBackButton }) {
                 <img class="back-icon" src="../../assets/back-arrow.png" alt="Back" />
             </a>
             <h2 id="page-title">${pageTitle}</h2>
-            <div class="spacer"></div>
         </div>`;
     } else {
         titleRow = `<h2 id="page-title">${pageTitle}</h2>`;
