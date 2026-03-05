@@ -59,6 +59,29 @@ function loadGroupViewNavbar({ pageTitle }) {
         `;
 }
 
+function loadHubNavbar({ pageTitle }) {
+    var container = document.getElementById("top-navbar");
+    if (!container) {
+        console.error("Navbar container not found");
+        return;
+    }
+    container.innerHTML = `
+        <nav class="top-navbar">
+            <div class="nav-row">
+                <a href="group-view.html" class="navbar-icon">
+                    <img class="home-icon" src="../assets/home-icon.png" alt="Home" />
+                </a>
+                <h1>Hub</h1>
+                <a onclick="window.history.back()">
+                    <img class="hub-icon" src="../assets/hub-icon.png" alt="Hub" />
+                </a>
+            </div>
+            <hr />
+            <h2 id="page-title">All Tasks</h2>
+        </nav>
+    `;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     const { navbarType, groupId, pageTitle, groupName } = document.body.dataset;
     if (navbarType === "group-specific") {
@@ -67,5 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
         loadTopNavbar({ groupId, pageTitle, groupName, showBackButton: true });
     } else if (navbarType === "group-view") {
         loadGroupViewNavbar({ pageTitle });
+    } else if (navbarType === "hub") {
+        loadHubNavbar({ pageTitle });
     }
 });
