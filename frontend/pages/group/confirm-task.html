@@ -8,6 +8,19 @@
     </head>
     <body data-navbar-type="manage-view-pages" data-group-id="1" data-group-name="Li Residence" data-page-title="Assign Task">
         <div id="top-navbar"></div>
+        <div class="page-content">
+            <form id="assign-task-form">
+                <div class="form-comp">
+                    <p class="comp-title">Member</p>
+                    <button disabled class="button">Meiqi Li</button>
+                    <p class="comp-title">Task</p>
+                    <button disabled class="button">Mop floor</button>
+                    <p class="comp-title">Deadline</p>
+                    <input type="text" id="task-date" placeholder="02/20/2026" />
+                </div>
+                <input type="button" class="submit-button" value="Assign Task" onclick="assignTask()" />
+            </form>
+        </div>
         <div id="bottom-navbar"></div>
     </body>
 </html>
