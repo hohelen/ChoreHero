@@ -51,7 +51,7 @@ function loadGroupViewNavbar({ pageTitle }) {
     container.innerHTML = ` 
     <nav class="top-navbar">
             <div class="nav-row">
-                <a href="../pages/landing.html" class="navbar-icon">
+                <a onclick="logout()" class="navbar-icon" style="cursor: pointer;">
                     <img class="logout-icon" src="../assets/logout-icon.png" alt="Log Out" />
                 </a>
                 <h1>My Groups</h1>
