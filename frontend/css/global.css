@@ -168,8 +168,9 @@ html {
     align-items: center;
     width: 100%;
     max-width: 800px;
-    padding-top: 10px;
-    margin-top: 20px;
+    padding-top: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 .title-row a {
     grid-column: 1;
@@ -188,7 +189,6 @@ html {
     font-size: 45px;
     font-weight: 600;
     color: #3d352f;
-    margin-top: 20px;
 }
 
 .bottom-navbar {
@@ -268,5 +268,3 @@ html {
     border-width: 0px;
     border-radius: 25px;
 }
-
-
