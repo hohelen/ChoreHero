@@ -123,6 +123,7 @@ html {
     left: 0;
     right: 0;
     padding-top: 30px;
+    z-index: 1;
 }
 /* buttons in top nav bar */
 .home-icon {
@@ -132,6 +133,10 @@ html {
 .hub-icon {
     height: 75px;
     width: 70px;
+}
+.back-icon {
+    height: 45px;
+    width: auto;
 }
 /* group name in header */
 .top-navbar h1 {
@@ -147,6 +152,7 @@ html {
     border: none;
     margin-top: 25px;
 }
+
 /* contains only home button, group name, hub button */
 .nav-row {
     display: flex;
@@ -155,11 +161,34 @@ html {
     width: 100%;
     max-width: 800px;
 }
+/* contains back button and page title */
+.title-row {
+    display: grid;
+    grid-template-columns: 45px 1fr 45px;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    padding-top: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.title-row a {
+    grid-column: 1;
+    justify-self: start;
+}
+.title-row #page-title {
+    grid-column: 2;
+    text-align: center;
+    margin: 0;
+}
+.spacer {
+    height: 45px;
+    width: auto;
+}
 #page-title {
     font-size: 45px;
     font-weight: 600;
     color: #3d352f;
-    margin-top: 20px;
 }
 
 .bottom-navbar {
@@ -238,74 +267,4 @@ html {
     font-size: 38px;
     border-width: 0px;
     border-radius: 25px;
-}
-
-/* task component for hub tasks, personal tasks, and group tasks */
-.task-comp {
-    display: flex;
-    gap: 40px;
-    position: relative;
-    background-color: var(--color-red-orange);
-    color: #655b53;
-    text-align: left;
-    padding-left: 50px;
-    width: 850px;
-    height: 135px;
-    font-family: "Lexend Deca", sans-serif;
-    font-weight: 450;
-    font-size: 38px;
-    border-width: 0px;
-    border-radius: 25px;
-}
-
-/* this class should only appear if the task is completed */
-.task-complete {
-    opacity: 0.5;
-}
-
-/* this class should only appear if the task is completed */
-.task-comp-strike {
-    position: absolute;
-    left: 30px;
-    right: 30px;
-    top: 50%;
-    height: 5px;
-    border-radius: 10px;
-    background-color: #655b53;
-    border: none;
-    z-index: 2;
-    opacity: 1;
-}
-
-.task-comp-date {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: #655b53;
-}
-
-.task-comp-day-of-wk {
-    font-size: 36px;
-}
-
-.task-comp-date-of-mo {
-    font-size: 36px;
-}
-
-.task-comp-detail {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.task-comp-user-or-group {
-    font-size: 36px;
-    color: #655b53;
-}
-
-.task-comp-name {
-    font-weight: 600;
-    font-size: 42px;
-    color: #3d352f;
 }
