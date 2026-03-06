@@ -17,7 +17,12 @@ function loadTopNavbar({ groupId, pageTitle, groupName, showBackButton }) {
             <div class="spacer"></div>
         </div>`;
     } else {
-        titleRow = `<h2 id="page-title">${pageTitle}</h2>`;
+        //titleRow = `<h2 id="page-title">${pageTitle}</h2>`;
+        titleRow = `<div class="title-row">
+            <div class="spacer"></div>
+            <h2 id="page-title">${pageTitle}</h2>
+            <div class="spacer"></div>
+        </div>`;
     }
 
     container.innerHTML = `
