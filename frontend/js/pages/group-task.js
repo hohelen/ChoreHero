@@ -12,7 +12,7 @@
 //     </button>
 // </li>
 
-function createTaskListItem(isComplete, day, date, asignee, task) {
+function createTaskListItem(isComplete, day, date, assignee, task) {
     const listItem = document.createElement("li");
     const button = document.createElement("button");
 
@@ -42,15 +42,15 @@ function createTaskListItem(isComplete, day, date, asignee, task) {
     const detailWrap = document.createElement("span");
     detailWrap.classList.add("task-comp-detail");
 
-    const asigneeSpan = document.createElement("span");
-    asigneeSpan.classList.add("task-comp-asignee");
-    asigneeSpan.textContent = asignee;
+    const assigneeSpan = document.createElement("span");
+    assigneeSpan.classList.add("task-comp-assignee");
+    assigneeSpan.textContent = assignee;
 
     const taskSpan = document.createElement("span");
     taskSpan.classList.add("task-comp-name");
     taskSpan.textContent = task;
 
-    detailWrap.appendChild(asigneeSpan);
+    detailWrap.appendChild(assigneeSpan);
     detailWrap.appendChild(taskSpan);
 
     button.appendChild(dateWrap);
@@ -91,6 +91,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     // const tasks = await res.json();
 
     const tasks = [
+        { isComplete: true, day: "Mon", date: "2", assignee: "Meiqi Li", name: "Take out trash" },
+        { isComplete: false, day: "Thu", date: "5", assignee: "Meiqi Li", name: "Clean garage" },
+        { isComplete: true, day: "Sun", date: "15", assignee: "Helen Ho", name: "Take out trash" },
+        { isComplete: true, day: "Tue", date: "17", assignee: "Rachel Pu", name: "Clean fridge" },
+        { isComplete: false, day: "Thu", date: "19", assignee: "Rachel Pu", name: "Clean guest bathroom" },
+        { isComplete: false, day: "Fri", date: "20", assignee: "Stephanie Nguyen", name: "Fix garage" },
+        { isComplete: false, day: "Mon", date: "23", assignee: "Helen Ho", name: "Clean garage" },
+        { isComplete: false, day: "Wed", date: "25", assignee: "Meiqi Li", name: "Take out trash" },
         { isComplete: true, day: "Mon", date: "2", assignee: "Meiqi Li", name: "Take out trash" },
         { isComplete: false, day: "Thu", date: "5", assignee: "Meiqi Li", name: "Clean garage" },
         { isComplete: true, day: "Sun", date: "15", assignee: "Helen Ho", name: "Take out trash" },
