@@ -93,6 +93,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         { isComplete: false, day: "Thu", date: "19", name: "Clean guest bathroom" },
         { isComplete: false, day: "Sat", date: "28", name: "Mop floors" },
         { isComplete: false, day: "Sun", date: "1", name: "Wash bedsheets" },
+        { isComplete: true, day: "Mon", date: "2", name: "Take out trash" },
+        { isComplete: false, day: "Thu", date: "5", name: "Clean garage" },
+        { isComplete: false, day: "Fri", date: "13", name: "Wash linens" },
+        { isComplete: false, day: "Sat", date: "14", name: "Mop floors" },
+        { isComplete: false, day: "Tue", date: "17", name: "Fix garage" },
+        { isComplete: false, day: "Thu", date: "19", name: "Clean guest bathroom" },
+        { isComplete: false, day: "Sat", date: "28", name: "Mop floors" },
+        { isComplete: false, day: "Sun", date: "1", name: "Wash bedsheets" },
 
 
     ];
