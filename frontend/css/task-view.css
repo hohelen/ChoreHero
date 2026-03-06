@@ -1,0 +1,48 @@
+/* contains back button and page title
+.task-view-title-row {
+    display: grid;
+    grid-template-columns: 45px 1fr 45px;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    padding-top: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.task-view-title-row a {
+    grid-column: 1;
+    justify-self: start;
+}
+.task-view-title-row #page-title {
+    grid-column: 2;
+    text-align: center;
+    margin: 0;
+} */
+
+#status-button {
+    font-family: "Lexend Deca", sans-serif;
+    background-color: #a59484;
+    color: #f5ece4;
+    height: 130px;
+    width: 850px;
+    border-radius: 100px;
+    border-width: 0px;
+    font-size: 35px;
+    font-weight: 400;
+    text-align: left;
+    padding-left: 40px;
+}
+
+#task-view-form {
+    margin-top: 50px;
+    margin-bottom: 350px;
+}
+
+#task-view-form input {
+    background-color: #D8C4B2;
+    color: #655B53;
+}
+
+#task-view-form input::placeholder {
+    color: #655B53;
+}
