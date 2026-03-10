@@ -20,8 +20,14 @@ function loadBottomNavbar({ groupId, groupName, currentView }) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+<<<<<<< HEAD
     const { navbarType, groupId, groupName, currentView } = document.body.dataset;
     if (navbarType === "group-specific") {
         loadBottomNavbar({ groupId, groupName, currentView });
+=======
+    const { navbarType, groupId, currentView } = document.body.dataset;
+    if (navbarType === "group-specific" || navbarType === "manage-view-pages") {
+        loadBottomNavbar({ groupId, currentView });
+>>>>>>> 4ab23deb853c6f413bd4d2167639bc607ebaf887
     }
 });

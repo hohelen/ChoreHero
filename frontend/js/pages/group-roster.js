@@ -1,4 +1,4 @@
-// Creates the following UI Task element
+// Creates the following UI User element
 // <li>
 //    <button class="button" onclick="">Name</button>
 // </li>
