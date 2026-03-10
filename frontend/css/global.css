@@ -258,8 +258,11 @@ html {
 .button {
     background-color: #d8c4b2;
     color: #655b53;
-    text-align: left;
-    padding-left: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 40px;
+    padding-right: 40px;
     width: 850px;
     height: 135px;
     font-family: "Lexend Deca", sans-serif;
@@ -267,4 +270,9 @@ html {
     font-size: 38px;
     border-width: 0px;
     border-radius: 25px;
+}
+
+.remove-icon {
+    width: 75px;
+    height: auto;
 }
