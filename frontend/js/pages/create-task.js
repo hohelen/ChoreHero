@@ -1,11 +1,9 @@
 requireLogin();
 
-// Pull group info from URL
 const params = new URLSearchParams(window.location.search);
-const groupId = params.get("id");
+const groupId = params.get("id"); // was "groupId"
 const groupName = params.get("name");
 
-// Set body attributes dynamically
 const body = document.getElementById("page-body");
 if (body) {
     body.setAttribute("data-group-id", groupId);
@@ -42,6 +40,4 @@ async function createTask() {
     } else {
         alert(data.detail || "Failed to create task. Please try again.");
     }
-
-    // make sure it moves to select-member
 }

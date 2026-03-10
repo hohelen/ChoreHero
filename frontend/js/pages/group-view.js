@@ -18,7 +18,7 @@ async function loadGroups() {
             <button 
                 class="button group-button" 
                 style="background-color: ${group.color}"
-                onclick="window.location.href = '../pages/group/group-task.html?id=${group.id}'"
+                onclick="window.location.href = '../pages/group/group-task.html?id=${group.id}&name=${encodeURIComponent(group.name)}'"
             >
                 ${group.name}
             </button>

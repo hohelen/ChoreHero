@@ -2,8 +2,10 @@
     <head>
         <title>Task View</title>
         <link rel="stylesheet" href="../css/global.css" />
-        <link rel="stylesheet" href="../css/task-view.css" />        
+        <link rel="stylesheet" href="../css/task-view.css" />
         <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet" />
+        <script src="../js/api/auth.js"></script>
+        <script src="../js/pages/task-view.js"></script>
         <script defer src="../js/pages/task-view.js"></script>
     </head>
     <body class="center-page">
@@ -18,23 +20,23 @@
             <form id="task-view-form">
                 <div class="form-comp">
                     <p class="comp-title">Group</p>
-                    <input type="text" id="group" placeholder="Li Residence" disabled/>
+                    <input type="text" id="group" placeholder="Li Residence" disabled />
                 </div>
                 <div class="form-comp">
                     <p class="comp-title">Assignee</p>
-                    <input type="text" id="assignee" placeholder="Meiqi Li" disabled/><br />
+                    <input type="text" id="assignee" placeholder="Meiqi Li" disabled /><br />
                 </div>
                 <div class="form-comp">
                     <p class="comp-title">Task</p>
-                    <input type="text" id="task" placeholder="Clean garage" disabled/><br />
+                    <input type="text" id="task" placeholder="Clean garage" disabled /><br />
                 </div>
                 <div class="form-comp">
                     <p class="comp-title">Due Date</p>
-                    <input type="text" id="due-date" placeholder="2/5/2026" disabled/><br />
+                    <input type="text" id="due-date" placeholder="2/5/2026" disabled /><br />
                 </div>
                 <div class="form-comp">
                     <p class="comp-title">Status</p>
-                    <input type="text" id="status" placeholder="Incomplete" disabled/><br />
+                    <input type="text" id="status" placeholder="Incomplete" disabled /><br />
                     <button id="status-button" onclick="updateStatus()">Incomplete</button>
                 </div>
             </form>

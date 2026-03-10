@@ -1,38 +1,43 @@
-// Creates the following UI Task element
-// <li>
-//    <button class="button" onclick="">Name</button>
-// </li>
+requireLogin();
 
-function createUserListItem(name) {
+const params = new URLSearchParams(window.location.search);
+const groupId = params.get("id");
+const groupName = params.get("name");
+
+const body = document.getElementById("page-body");
+body.setAttribute("data-group-id", groupId);
+body.setAttribute("data-group-name", groupName);
+
+function createUserListItem(userId, userName) {
     const listItem = document.createElement("li");
     const button = document.createElement("button");
     button.classList.add("button");
-    button.textContent = name;
-    // after selecting user, goes to select task page
+    button.textContent = userName;
     button.addEventListener("click", () => {
-        window.location.href = `select-task.html?member=${encodeURIComponent(name)}`;
+        window.location.href = `select-task.html?id=${groupId}&name=${encodeURIComponent(groupName)}&userId=${userId}&member=${encodeURIComponent(userName)}`;
     });
     listItem.appendChild(button);
     return listItem;
 }
 
-// Renders the group members
-function renderUsers(list, users) {
+function renderUsers(list, members) {
     list.innerHTML = "";
-    users.forEach((user) => {
-        const listItem = createUserListItem(user.name);
-        list.appendChild(listItem);
+    if (members.length === 0) {
+        list.innerHTML = `<p class="no-members-msg">No members found in this group.</p>`;
+        return;
+    }
+    members.forEach((member) => {
+        list.appendChild(createUserListItem(member.id, member.full_name));
     });
 }
 
-// Add the group members
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const list = document.querySelector(".buttons-list");
-    if (!list) {
-        return;
-    }
+    if (!list) return;
 
-    // Replace this with a real API call to fetch group members
-    const users = [{ name: "Meiqi Li" }, { name: "Stephanie Nguyen" }, { name: "Helen Ho" }, { name: "Rachel Pu" }];
-    renderUsers(list, users);
+    const res = await authFetch(`/group/${groupId}/members`);
+    if (!res) return;
+
+    const data = await res.json();
+    renderUsers(list, data.members);
 });

@@ -1,28 +1,29 @@
-// Creates the following UI task element
-// <li>
-//     <button class="task-comp" onclick="">
-//         <span class="task-comp-date">
-//             <span class="task-comp-day-of-wk">Mon</span>
-//             <span class="task-comp-date-of-mo">20</span>
-//         </span>
-//         <span class="task-comp-detail">
-//             <span class="personal-task-comp-name">Fix garage</span>
-//         </span>
-//     </button>
-// </li>
+requireLogin();
 
-function createTaskListItem(isComplete, day, date, task) {
+const params = new URLSearchParams(window.location.search);
+const groupId = params.get("id");
+const groupName = params.get("name");
+
+const body = document.getElementById("page-body");
+body.setAttribute("data-group-id", groupId);
+body.setAttribute("data-group-name", groupName);
+
+function createTaskListItem(isComplete, day, date, task, taskId, dueDate, status) {
     const listItem = document.createElement("li");
     const button = document.createElement("button");
 
     button.classList.add("task-comp");
     if (isComplete) {
         button.classList.add("task-complete");
-
         const strike = document.createElement("span");
         strike.classList.add("task-comp-strike");
         button.appendChild(strike);
     }
+
+    button.addEventListener("click", () => {
+        const currentUser = JSON.parse(localStorage.getItem("user"));
+        window.location.href = `../../pages/task-view.html?id=${groupId}&name=${encodeURIComponent(groupName)}&taskId=${taskId}&task=${encodeURIComponent(task)}&assignee=${encodeURIComponent(currentUser.full_name)}&userId=${currentUser.id}&dueDate=${dueDate}&status=${status}`;
+    });
 
     const dateWrap = document.createElement("span");
     dateWrap.classList.add("task-comp-date");
@@ -54,15 +55,27 @@ function createTaskListItem(isComplete, day, date, task) {
     return listItem;
 }
 
-// Renders the group tasks
 function renderTasks(list, tasks) {
     list.innerHTML = "";
+
+    if (!tasks || tasks.length === 0) {
+        list.innerHTML = `<p class="no-tasks-msg">No tasks assigned to you in this group yet.</p>`;
+        return;
+    }
+
     tasks.forEach((task) => {
-        list.appendChild(createTaskListItem(task.isComplete, task.day, task.date, task.name));
+        const isComplete = task.status === "completed";
+        let day = "",
+            date = "";
+        if (task.due_date) {
+            const d = new Date(task.due_date);
+            day = d.toLocaleDateString("en-US", { weekday: "short" });
+            date = d.getDate();
+        }
+        list.appendChild(createTaskListItem(isComplete, day, date, task.title, task.id, task.due_date, task.status));
     });
 }
 
-// Sets the task component background color
 function setTaskCompColor(colorVar) {
     const rootStyles = getComputedStyle(document.documentElement);
     const resolvedColor = rootStyles.getPropertyValue(colorVar).trim();
@@ -73,38 +86,14 @@ function setTaskCompColor(colorVar) {
     });
 }
 
-// Adds the group tasks
 document.addEventListener("DOMContentLoaded", async () => {
     const list = document.querySelector(".buttons-list");
-    if (!list) {
-        return;
-    }
+    if (!list) return;
 
-    // Later: replace this with a real API call
-    // const res = await fetch("/api/tasks");
-    // const tasks = await res.json();
+    const res = await authFetch(`/my-tasks/${groupId}`);
+    if (!res) return;
 
-    const tasks = [
-        { isComplete: true, day: "Mon", date: "2", name: "Take out trash" },
-        { isComplete: false, day: "Thu", date: "5", name: "Clean garage" },
-        { isComplete: false, day: "Fri", date: "13", name: "Wash linens" },
-        { isComplete: false, day: "Sat", date: "14", name: "Mop floors" },
-        { isComplete: false, day: "Tue", date: "17", name: "Fix garage" },
-        { isComplete: false, day: "Thu", date: "19", name: "Clean guest bathroom" },
-        { isComplete: false, day: "Sat", date: "28", name: "Mop floors" },
-        { isComplete: false, day: "Sun", date: "1", name: "Wash bedsheets" },
-        { isComplete: true, day: "Mon", date: "2", name: "Take out trash" },
-        { isComplete: false, day: "Thu", date: "5", name: "Clean garage" },
-        { isComplete: false, day: "Fri", date: "13", name: "Wash linens" },
-        { isComplete: false, day: "Sat", date: "14", name: "Mop floors" },
-        { isComplete: false, day: "Tue", date: "17", name: "Fix garage" },
-        { isComplete: false, day: "Thu", date: "19", name: "Clean guest bathroom" },
-        { isComplete: false, day: "Sat", date: "28", name: "Mop floors" },
-        { isComplete: false, day: "Sun", date: "1", name: "Wash bedsheets" },
-
-
-    ];
-
-    renderTasks(list, tasks);
+    const data = await res.json();
+    renderTasks(list, data.tasks);
     setTaskCompColor("--color-red-orange");
 });

@@ -1,26 +1,30 @@
+<!doctype html>
 <html>
     <head>
         <title>Assign Task</title>
         <link rel="stylesheet" href="../../css/global.css" />
         <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet" />
-        <script defer src="../../js/components/top-navbar.js"></script>
-        <script defer src="../../js/components/bottom-navbar.js"></script>
     </head>
-    <body data-navbar-type="manage-view-pages" data-group-id="1" data-group-name="Li Residence" data-page-title="Assign Task">
+    <body id="page-body" data-navbar-type="manage-view-pages" data-group-id="" data-group-name="" data-page-title="Assign Task">
         <div id="top-navbar"></div>
         <div class="page-content">
             <form id="assign-task-form">
                 <div class="form-comp">
                     <p class="comp-title">Member</p>
-                    <button disabled class="button">Meiqi Li</button>
+                    <button disabled class="button" id="member-display"></button>
                     <p class="comp-title">Task</p>
-                    <button disabled class="button">Mop floor</button>
+                    <button disabled class="button" id="task-display"></button>
                     <p class="comp-title">Deadline</p>
-                    <input type="text" id="task-date" placeholder="02/20/2026" />
+                    <input type="text" id="task-date" placeholder="MM/DD/YYYY" />
                 </div>
                 <input type="button" class="submit-button" value="Assign Task" onclick="assignTask()" />
             </form>
         </div>
         <div id="bottom-navbar"></div>
+
+        <script src="../../js/api/auth.js"></script>
+        <script src="../../js/pages/confirm-task.js"></script>
+        <script src="../../js/components/top-navbar.js"></script>
+        <script src="../../js/components/bottom-navbar.js"></script>
     </body>
 </html>

@@ -1,39 +1,45 @@
-// Creates the following UI task element
-// <li>
-//    <button class="button" onclick="">Task Name</button>
-// </li>
+requireLogin();
 
-function createTaskListItem(taskName) {
+const params = new URLSearchParams(window.location.search);
+const groupId = params.get("id");
+const groupName = params.get("name");
+const userId = params.get("userId");
+const memberName = params.get("member");
+
+const body = document.getElementById("page-body");
+body.setAttribute("data-group-id", groupId);
+body.setAttribute("data-group-name", groupName);
+
+function createTaskListItem(taskId, taskName) {
     const listItem = document.createElement("li");
     const button = document.createElement("button");
     button.classList.add("button");
     button.textContent = taskName;
-    // after selecting task, goes to select date page
-    // should include name and task
     button.addEventListener("click", () => {
-        window.location.href = `confirm-task.html?task=${encodeURIComponent(taskName)}`;
+        window.location.href = `confirm-task.html?id=${groupId}&name=${encodeURIComponent(groupName)}&userId=${userId}&member=${encodeURIComponent(memberName)}&taskId=${taskId}&task=${encodeURIComponent(taskName)}`;
     });
     listItem.appendChild(button);
     return listItem;
 }
 
-// Renders the tasks
 function renderTasks(list, tasks) {
     list.innerHTML = "";
+    if (tasks.length === 0) {
+        list.innerHTML = `<p class="no-tasks-msg">No tasks found for this group.</p>`;
+        return;
+    }
     tasks.forEach((task) => {
-        const listItem = createTaskListItem(task.taskName);
-        list.appendChild(listItem);
+        list.appendChild(createTaskListItem(task.id, task.title));
     });
 }
 
-// Add the tasks
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const list = document.querySelector(".buttons-list");
-    if (!list) {
-        return;
-    }
+    if (!list) return;
 
-    // Replace this with a real API call to fetch tasks
-    const tasks = [{ taskName: "Mop floor" }, { taskName: "Clean garage" }, { taskName: "Clean guest bathroom" }, { taskName: "Take out trash" }, { taskName: "Fix garage" }, { taskName: "Clean fridge" }, { taskName: "Change bulbs" }];
-    renderTasks(list, tasks);
+    const res = await authFetch(`/group/${groupId}/all-tasks`);
+    if (!res) return;
+
+    const data = await res.json();
+    renderTasks(list, data.tasks);
 });
