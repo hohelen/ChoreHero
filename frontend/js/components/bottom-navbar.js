@@ -21,7 +21,7 @@ function loadBottomNavbar({ groupId, currentView }) {
 
 document.addEventListener("DOMContentLoaded", function () {
     const { navbarType, groupId, currentView } = document.body.dataset;
-    if (navbarType === "group-specific") {
+    if (navbarType === "group-specific" || navbarType === "manage-view-pages") {
         loadBottomNavbar({ groupId, currentView });
     }
 });
