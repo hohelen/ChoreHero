@@ -1,0 +1,47 @@
+.form-comp input {
+    margin: 0;
+}
+.confirmationMsg {
+    min-height: 80px;
+    margin-top: 40px;
+}
+
+.confirmationMsg p {
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 600;
+    font-size: 30px;
+    text-align: center;
+    color: #a59484;
+}
+
+#confirmationMsg:empty {
+    visibility: hidden;
+}
+
+.invite-code-container {
+    position: fixed;
+    bottom: 425px;
+    display: flex;
+    justify-content: center;
+    z-index: 100;
+}
+
+.invite-label {
+    font-size: 45px;
+    margin-bottom: 10px;
+}
+
+.invite-code {
+    font-weight: bold;
+    font-size: 65px;
+}
+#invite-code-button {
+    background-color: #a59484;
+    color: #f5ece4;
+    width: 600px;
+    height: 175px;
+    position: fixed;
+    font-family: "Lexend Deca", sans-serif;
+    border: none;
+    border-radius: 25px;
+}
