@@ -1,6 +1,7 @@
 .form-comp input {
     margin: 0;
 }
+
 .confirmationMsg {
     min-height: 80px;
     margin-top: 40px;
@@ -19,11 +20,9 @@
 }
 
 .invite-code-container {
-    position: fixed;
-    bottom: 425px;
+    margin-top: 110%;
     display: flex;
     justify-content: center;
-    z-index: 100;
 }
 
 .invite-label {
