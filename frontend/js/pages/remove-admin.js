@@ -8,7 +8,7 @@ function createUserListItem(name) {
     const button = document.createElement("button");
     button.classList.add("button");
     button.textContent = name;
-    button.dataset.memberName = name;
+    button.dataset.adminName = name;
 
     const removeIcon = document.createElement("img");
     removeIcon.classList.add("remove-icon");
@@ -19,7 +19,7 @@ function createUserListItem(name) {
     return listItem;
 }
 
-// Renders the group members
+// Renders the group admin
 function renderUsers(list, users) {
     list.innerHTML = "";
     users.forEach((user) => {
@@ -28,7 +28,7 @@ function renderUsers(list, users) {
     });
 }
 
-// Add the group members
+// Add the group admins
 document.addEventListener("DOMContentLoaded", () => {
     const list = document.querySelector(".buttons-list");
     if (!list) {
@@ -37,8 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const popup = document.querySelector(".popup");
 
-    // TODO: Replace this with a real API call to fetch group members
-    const users = [{ name: "Helen Ho" }, { name: "Stephanie Nguyen" }, { name: "Rachel Pu" }];
+    // TODO: Replace this with a real API call to fetch group admins
+    const users = [{ name: "Meiqi Li" }, { name: "Helen Ho" }];
     renderUsers(list, users);
 
     if (!popup) {
@@ -51,8 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const memberName = button.dataset.memberName || button.textContent.trim();
-        const content = createPopUpContent("member", memberName);
+        const adminName = button.dataset.adminName || button.textContent.trim();
+        const content = createPopUpContent("admin", adminName);
         renderPopup(popup, content);
         popup.classList.add("is-visible");
 
@@ -67,6 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
         }
 
-        // TODO: Remove button should 1) remove member from the group, 2) close the popup, 3) display the updated members in the group in "Remove Member"
+        // TODO: Remove button should 1) downgrade admin to a regular member, 2) close the popup, 3) display the updated admins in the group in "Remove Admin"
     });
 });
