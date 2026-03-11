@@ -26,7 +26,7 @@ function createPopUpContent(type, name) {
     if (type == "member") {
         popupQuestion.innerHTML = "Are you sure you want <br> to remove this member?";
     } else if (type == "admin") {
-        popupQuestion.innerHTML = "Are you sure you want <br> to remove this admin?";
+        popupQuestion.innerHTML = "Are you sure you want to <br> remove this admin's perms?";
     } else if (type == "leave") {
         popupQuestion.innerHTML = "Are you sure you want <br> to leave this group?";
     } else {
