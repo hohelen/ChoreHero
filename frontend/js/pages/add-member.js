@@ -15,12 +15,12 @@ function addMember() {
     var email = emailInput.value.trim();
     if (isValidEmail(email)) {
         // add user to database and display success message
-        document.getElementById("confirmationMsg").textContent = "Successfully added " + email;
+        document.getElementById("confirmation-msg").textContent = "Successfully added " + email;
 
         // if user cannot be added, display failure message
         // document.getElementById("confirmationMsg").textContent = "Failed to added " + email;
     } else {
-        document.getElementById("confirmationMsg").textContent = "Please enter a valid email address";
+        document.getElementById("confirmation-msg").textContent = "Please enter a valid email address";
         return;
     }
 }
@@ -32,7 +32,11 @@ function isValidEmail(email) {
 
 function copyInviteCode() {
     var copyText = document.getElementById("invite-code-text").textContent;
+    var confirmationCopy = document.getElementById("confirmation-copy");
     navigator.clipboard.writeText(copyText).then(() => {
-        alert("Invite code copied");
+        confirmationCopy.textContent = "Invite code copied";
+        setTimeout(() => {
+            confirmationCopy.textContent = "";
+        }, 5000);
     });
 }
