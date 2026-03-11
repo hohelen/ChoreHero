@@ -2,12 +2,23 @@
     margin: 0;
 }
 
-.confirmationMsg {
+.confirmation-msg {
     min-height: 80px;
     margin-top: 40px;
 }
 
-.confirmationMsg p {
+.confirmation-msg p {
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 600;
+    font-size: 30px;
+    text-align: center;
+    color: #a59484;
+}
+
+.confirmation-copy {
+}
+
+.confirmation-copy {
     font-family: "Lexend Deca", sans-serif;
     font-weight: 600;
     font-size: 30px;
@@ -20,9 +31,7 @@
 }
 
 .invite-code-container {
-    margin-top: 110%;
-    display: flex;
-    justify-content: center;
+    margin-top: 520px;
 }
 
 .invite-label {
@@ -39,7 +48,6 @@
     color: #f5ece4;
     width: 600px;
     height: 175px;
-    position: fixed;
     font-family: "Lexend Deca", sans-serif;
     border: none;
     border-radius: 25px;
