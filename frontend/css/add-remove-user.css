@@ -1,0 +1,69 @@
+.popup {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    margin-top: 765px;
+    background-color: #A59484;
+    height: 720px;
+    width: 720px;
+    border-radius: 45px;
+}
+
+.popup.is-visible {
+    display: flex;
+}
+
+.popup-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.popup-remove-icon {
+    width: 175px;
+    height: 175px;
+    margin-bottom: 10px;
+}
+
+.popup-question {
+    color: #F5ECE4;
+    font-size: 47px;
+    margin-bottom: 15px;
+}
+
+.popup-name {
+    display: flex;
+    align-items: center;
+    color: #F5ECE4;
+    height: 155px;
+    font-size: 65px;
+    font-weight: 600;
+    margin-bottom: 40px;
+}
+
+.popup-buttons {
+    display: flex;
+    gap: 30px;
+}
+
+.popup-buttons button {
+    font-family: "Lexend Deca", sans-serif;
+    color: #f5ece4;
+    width: 290px;
+    height: 115px;
+    border-radius: 100px;
+    border-width: 0px;
+    font-size: 45px;
+    font-weight: 500;
+}
+
+.popup-cancel-btn {
+    background-color: #655B53;
+}
+
+.popup-action-btn {
+    background-color: #D8C4B2;
+}

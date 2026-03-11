@@ -1,6 +1,6 @@
 // Creates the following UI User element
 // <li>
-//    <button class="button" onclick="">Name<img class="remove-icon" src="../../assets/remove.png" alt="Remove" /></button>
+//    <button class="button" onclick="">Name<img class="remove-icon" src="../../assets/remove.png"/></button>
 // </li>
 
 function createUserListItem(name) {
@@ -8,11 +8,11 @@ function createUserListItem(name) {
     const button = document.createElement("button");
     button.classList.add("button");
     button.textContent = name;
+    button.dataset.memberName = name;
 
     const removeIcon = document.createElement("img");
     removeIcon.classList.add("remove-icon");
     removeIcon.src = "../../assets/remove-icon.png";
-    // removeIcon.alt = "Remove";
     button.appendChild(removeIcon);
 
     listItem.appendChild(button);
@@ -35,7 +35,38 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    // Replace this with a real API call to fetch group members
-    const users = [{ name: "Stephanie Nguyen" }, { name: "Helen Ho" }, { name: "Rachel Pu" }];
+    const popup = document.querySelector(".popup");
+
+    // TODO: Replace this with a real API call to fetch group members
+    const users = [{ name: "Helen Ho" }, { name: "Stephanie Nguyen" }, { name: "Rachel Pu" }];
     renderUsers(list, users);
+
+    if (!popup) {
+        return;
+    }
+
+    list.addEventListener("click", (event) => {
+        const button = event.target.closest("button.button");
+        if (!button) {
+            return;
+        }
+
+        const memberName = button.dataset.memberName || button.textContent.trim();
+        const content = createPopUpContent("member", memberName);
+        renderPopup(popup, content);
+        popup.classList.add("is-visible");
+
+        const cancelButton = popup.querySelector(".popup-cancel-btn");
+        if (cancelButton) {
+            cancelButton.addEventListener(
+                "click",
+                () => {
+                    popup.classList.remove("is-visible");
+                },
+                { once: true }
+            );
+        }
+
+        // TODO: Remove button should 1) remove member from the group, 2) close the popup, 3) display the updated members in the group in "Remove Member" page
+    });
 });
