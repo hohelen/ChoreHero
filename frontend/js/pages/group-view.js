@@ -1,9 +1,14 @@
 requireLogin();
 
 async function loadGroups() {
-    const groups = await getMyGroups();
     const list = document.getElementById("group-list");
+    if (!list) {
+        console.error("group-list not found");
+        return;
+    }
+
     const plusButton = list.querySelector("li:last-child");
+    const groups = await getMyGroups();
 
     if (!groups || groups.length === 0) {
         const empty = document.createElement("li");
@@ -14,17 +19,18 @@ async function loadGroups() {
 
     groups.forEach((group) => {
         const li = document.createElement("li");
-        li.innerHTML = `
-            <button 
-                class="button group-button" 
-                style="background-color: ${group.color}"
-                onclick="window.location.href = '../pages/group/group-task.html?id=${group.id}&name=${encodeURIComponent(group.name)}'"
-            >
-                ${group.name}
-            </button>
-        `;
+        const button = document.createElement("button");
+        button.classList.add("button", "group-button");
+        button.style.backgroundColor = group.color || "#cccccc";
+        button.textContent = group.name;
+        button.addEventListener("click", () => {
+            window.location.href = `../pages/group/group-task.html?id=${group.id}&name=${encodeURIComponent(group.name)}`;
+        });
+        li.appendChild(button);
         list.insertBefore(li, plusButton);
     });
 }
 
-loadGroups();
+document.addEventListener("DOMContentLoaded", () => {
+    loadGroups();
+});

@@ -85,14 +85,15 @@ function renderTasks(list, tasks) {
 
     tasks.forEach((task) => {
         const isComplete = task.status === "completed";
-        let day = "",
-            date = "";
+        let dayOfWeek = "",
+            dayOfMonth = "";
         if (task.due_date) {
-            const d = new Date(task.due_date);
-            day = d.toLocaleDateString("en-US", { weekday: "short" });
-            date = d.getDate();
+            const [year, month, day] = task.due_date.split("-");
+            const d = new Date(year, month - 1, day);
+            dayOfWeek = d.toLocaleDateString("en-US", { weekday: "short" });
+            dayOfMonth = d.getDate();
         }
-        list.appendChild(createTaskListItem(isComplete, day, date, task.assigned_to, task.title, task.id, task.user_id, task.due_date, task.status));
+        list.appendChild(createTaskListItem(isComplete, dayOfWeek, dayOfMonth, task.assigned_to, task.title, task.id, task.user_id, task.due_date, task.status));
     });
 }
 

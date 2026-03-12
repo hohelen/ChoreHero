@@ -17,7 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".buttons-list button").forEach((button) => {
         const onclick = button.getAttribute("onclick");
         if (onclick) {
-            button.setAttribute("onclick", onclick.replace(/\?groupId=\d+/, `?id=${groupId}&name=${encodedName}`));
+            const updated = onclick.replace(/\?groupId=\d+/, `?id=${groupId}&name=${encodedName}`);
+            button.setAttribute("onclick", updated);
         }
     });
 });

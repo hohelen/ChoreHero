@@ -20,8 +20,13 @@ function loadBottomNavbar({ groupId, groupName, currentView }) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    const { navbarType, groupId, currentView } = document.body.dataset;
+    const { navbarType, groupId, groupName, currentView } = document.body.dataset;
+
+    const params = new URLSearchParams(window.location.search);
+    const resolvedGroupId = groupId || params.get("id");
+    const resolvedGroupName = groupName || params.get("name");
+
     if (navbarType === "group-specific" || navbarType === "manage-view-pages") {
-        loadBottomNavbar({ groupId, currentView });
+        loadBottomNavbar({ groupId: resolvedGroupId, groupName: resolvedGroupName, currentView });
     }
 });

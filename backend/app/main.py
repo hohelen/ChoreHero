@@ -235,7 +235,6 @@ def create_group(data: CreateGroupRequest, token_data: dict = Depends(verify_tok
             "group": {
                 "id": new_group_id,
                 "name": data.name,
-                "color": data.color,
                 "invite_code": invite_code
             }
         }
