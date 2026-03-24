@@ -2,6 +2,7 @@
     <head>
         <title>Create Task</title>
         <link rel="stylesheet" href="../../css/global.css" />
+        <link rel="stylesheet" href="../../css/create-task.css" />
         <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet" />
     </head>
     <body id="page-body" data-navbar-type="manage-view-pages" data-group-id="" data-group-name="" data-page-title="Create Task" data-current-view="manage-view">
@@ -11,6 +12,9 @@
                 <div class="form-comp">
                     <p class="comp-title">Task Name</p>
                     <input type="text" id="task-name" placeholder="Task Name" />
+                </div>
+                <div class="error-msg">
+                    <p id="error-msg"></p>
                 </div>
                 <input type="button" class="submit-button" value="Create Task" onclick="createTask()" />
             </form>

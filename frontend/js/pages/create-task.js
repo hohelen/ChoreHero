@@ -14,7 +14,7 @@ async function createTask() {
     const title = document.getElementById("task-name").value.trim();
 
     if (!title) {
-        alert("Please enter a task name.");
+        document.getElementById("error-msg").textContent = "Please enter a task name";
         return;
     }
 

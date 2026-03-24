@@ -3,6 +3,7 @@
     <head>
         <title>Assign Task</title>
         <link rel="stylesheet" href="../../css/global.css" />
+        <link rel="stylesheet" href="../../css/confirm-task.css" />
         <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet" />
     </head>
     <body id="page-body" data-navbar-type="manage-view-pages" data-group-id="" data-group-name="" data-page-title="Assign Task" data-current-view="manage-view">
@@ -17,6 +18,10 @@
                     <p class="comp-title">Deadline</p>
                     <input type="text" id="task-date" placeholder="MM/DD/YYYY" />
                 </div>
+                <div class="error-msg">
+                    <p id="error-msg"></p>
+                </div>
+
                 <input type="button" class="submit-button" value="Assign Task" onclick="assignTask()" />
             </form>
         </div>
