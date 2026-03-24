@@ -1,14 +1,12 @@
+<!doctype html>
 <html>
     <head>
         <title>Add Member</title>
         <link rel="stylesheet" href="../../css/global.css" />
         <link rel="stylesheet" href="../../css/add-member.css" />
         <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet" />
-        <script defer src="../../js/components/top-navbar.js"></script>
-        <script defer src="../../js/pages/add-member.js"></script>
-        <script defer src="../../js/components/bottom-navbar.js"></script>
     </head>
-    <body data-navbar-type="manage-view-pages" data-group-id="1" data-group-name="Li Residence" data-page-title="Add Member" data-current-view="manage-view">
+    <body id="page-body" data-navbar-type="manage-view-pages" data-group-id="" data-group-name="" data-page-title="Add Member" data-current-view="manage-view">
         <div id="top-navbar"></div>
         <div class="page-content">
             <form id="add-member-form">
@@ -32,5 +30,10 @@
             </div>
         </div>
         <div id="bottom-navbar"></div>
+
+        <script src="../../js/api/auth.js"></script>
+        <script src="../../js/pages/add-member.js"></script>
+        <script src="../../js/components/top-navbar.js"></script>
+        <script src="../../js/components/bottom-navbar.js"></script>
     </body>
 </html>
