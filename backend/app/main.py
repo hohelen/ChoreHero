@@ -70,6 +70,10 @@ class CreateTaskRequest(BaseModel):
     group_id: int
     title: str
 
+class UpdateGroupColorRequest(BaseModel):
+    group_id: int
+    color: str
+
 class AssignTaskRequest(BaseModel):
     task_id: int
     user_id: int
@@ -185,6 +189,28 @@ def get_my_groups(token_data: dict = Depends(verify_token)):
             groups = cursor.fetchall()
 
         return {"groups": groups}
+    finally:
+        db.close()
+
+@app.get("/my-tasks/all")
+def get_all_my_tasks(token_data: dict = Depends(verify_token)):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute("""
+                SELECT t.id, t.title, t.due_date, t.group_id,
+                       ta.status, ta.user_id,
+                       g.name AS group_name,
+                       gm.color
+                FROM tasks t
+                JOIN task_assignments ta ON t.id = ta.task_id
+                JOIN groups_existing g ON t.group_id = g.id
+                JOIN group_members gm ON g.id = gm.group_id AND gm.user_id = ta.user_id
+                WHERE ta.user_id = %s
+            """, (token_data["user_id"],))
+            tasks = cursor.fetchall()
+
+        return {"tasks": tasks}
     finally:
         db.close()
 
@@ -313,6 +339,43 @@ def create_group(data: CreateGroupRequest, token_data: dict = Depends(verify_tok
     finally:
         db.close()
 
+@app.post("/join-group")
+def join_group(data: JoinGroupRequest, token_data: dict = Depends(verify_token)):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(
+                "SELECT id, name FROM groups_existing WHERE invite_code = %s",
+                (data.invite_code,)
+            )
+            group = cursor.fetchone()
+
+            if not group:
+                raise HTTPException(status_code=404, detail="Invalid invite code.")
+
+            cursor.execute(
+                "SELECT * FROM group_members WHERE group_id = %s AND user_id = %s",
+                (group["id"], token_data["user_id"])
+            )
+            if cursor.fetchone():
+                raise HTTPException(status_code=400, detail="You are already a member of this group.")
+
+            cursor.execute(
+                "INSERT INTO group_members (group_id, user_id, role) VALUES (%s, %s, %s)",
+                (group["id"], token_data["user_id"], "member")
+            )
+
+        db.commit()
+        return {"message": "Successfully joined group", "group": {"id": group["id"], "name": group["name"]}}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        db.close()
+
 @app.post("/create-task")
 def create_task(data: CreateTaskRequest, token_data: dict = Depends(verify_token)):
     db = get_db()
@@ -345,13 +408,11 @@ def create_task(data: CreateTaskRequest, token_data: dict = Depends(verify_token
 def assign_task(data: AssignTaskRequest, token_data: dict = Depends(verify_token)):
     db = get_db()
     try:
-        # Validate date is today or in the future
         due_date = datetime.datetime.strptime(data.due_date, "%Y-%m-%d").date()
         if due_date < datetime.date.today():
             raise HTTPException(status_code=400, detail="Due date cannot be in the past.")
 
         with db.cursor() as cursor:
-            # Block same task to same user on same date
             cursor.execute(
                 "SELECT * FROM task_assignments WHERE task_id = %s AND user_id = %s AND due_date = %s",
                 (data.task_id, data.user_id, data.due_date)
@@ -390,6 +451,23 @@ def update_task_status(data: UpdateTaskStatusRequest, token_data: dict = Depends
             )
         db.commit()
         return {"message": "Status updated successfully"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        db.close()
+
+@app.post("/update-group-color")
+def update_group_color(data: UpdateGroupColorRequest, token_data: dict = Depends(verify_token)):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(
+                "UPDATE group_members SET color = %s WHERE group_id = %s AND user_id = %s",
+                (data.color, data.group_id, token_data["user_id"])
+            )
+        db.commit()
+        return {"message": "Color updated successfully"}
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
@@ -453,43 +531,3 @@ See you there!
 @app.post("/logout")
 def logout():
     return {"message": "Logged out successfully"}
-
-@app.post("/join-group")
-def join_group(data: JoinGroupRequest, token_data: dict = Depends(verify_token)):
-    db = get_db()
-    try:
-        with db.cursor() as cursor:
-            # Find group by invite code
-            cursor.execute(
-                "SELECT id, name FROM groups_existing WHERE invite_code = %s",
-                (data.invite_code,)
-            )
-            group = cursor.fetchone()
-
-            if not group:
-                raise HTTPException(status_code=404, detail="Invalid invite code.")
-
-            # Check if user is already a member
-            cursor.execute(
-                "SELECT * FROM group_members WHERE group_id = %s AND user_id = %s",
-                (group["id"], token_data["user_id"])
-            )
-            if cursor.fetchone():
-                raise HTTPException(status_code=400, detail="You are already a member of this group.")
-
-            # Add user as member
-            cursor.execute(
-                "INSERT INTO group_members (group_id, user_id, role) VALUES (%s, %s, %s)",
-                (group["id"], token_data["user_id"], "member")
-            )
-
-        db.commit()
-        return {"message": "Successfully joined group", "group": {"id": group["id"], "name": group["name"]}}
-
-    except HTTPException:
-        raise
-    except Exception as e:
-        db.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
-    finally:
-        db.close()

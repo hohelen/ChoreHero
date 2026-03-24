@@ -1,27 +1,54 @@
-// Creates the following UI Button element
-// <li>
-//    <button class="button" onclick="">Red</button>
-// </li>
+requireLogin();
 
-function createColorListItem(name) {
+const params = new URLSearchParams(window.location.search);
+const groupId = params.get("id");
+const groupName = params.get("name");
+
+const body = document.getElementById("page-body");
+body.setAttribute("data-group-id", groupId);
+body.setAttribute("data-group-name", groupName);
+
+function createColorListItem(name, colorVar) {
     const listItem = document.createElement("li");
     const button = document.createElement("button");
     button.classList.add("button");
     button.textContent = name;
+
+    const rootStyles = getComputedStyle(document.documentElement);
+    const resolvedColor = rootStyles.getPropertyValue(colorVar).trim();
+    button.style.backgroundColor = resolvedColor || colorVar;
+
+    button.addEventListener("click", async () => {
+        const res = await authFetch("/update-group-color", {
+            method: "POST",
+            body: JSON.stringify({
+                group_id: parseInt(groupId),
+                color: resolvedColor || colorVar,
+            }),
+        });
+
+        if (!res) return;
+
+        const data = await res.json();
+
+        if (res.ok) {
+            window.location.href = `group-task.html?id=${groupId}&name=${encodeURIComponent(groupName)}`;
+        } else {
+            alert(data.detail || "Failed to update color.");
+        }
+    });
+
     listItem.appendChild(button);
     return listItem;
 }
 
-// Renders the colors
-function renderColors(list, colors) {
+function renderColors(list, colors, colorMap) {
     list.innerHTML = "";
     colors.forEach((color) => {
-        const listItem = createColorListItem(color.name);
-        list.appendChild(listItem);
+        list.appendChild(createColorListItem(color.name, colorMap[color.name]));
     });
 }
 
-// Creates a group to color map - used for setSpecificButtonColor
 function createColorMap() {
     return {
         Red: "--color-red",
@@ -35,32 +62,11 @@ function createColorMap() {
     };
 }
 
-// Sets the button background color
-function setSpecificButtonColor(groupColorMap) {
-    const rootStyles = getComputedStyle(document.documentElement);
-
-    document.querySelectorAll(".button").forEach((button) => {
-        const colorName = button.textContent?.trim();
-        const colorVar = colorName ? groupColorMap[colorName] : null;
-
-        if (!colorVar) {
-            return;
-        }
-
-        const resolvedColor = rootStyles.getPropertyValue(colorVar).trim();
-        const color = resolvedColor || colorVar;
-        button.style.backgroundColor = color;
-    });
-}
-
-// Add the colors
 document.addEventListener("DOMContentLoaded", () => {
     const list = document.querySelector(".buttons-list");
-    if (!list) {
-        return;
-    }
+    if (!list) return;
 
-    const colors = [{ name: "Red" }, { name: "Red-Orange" }, { name: "Orange" }, { name: "Yellow" }, { name: "Green" }, { name: "Blue" }, { name: "Blue-Purple" }, { name: "Purple" }];
-    renderColors(list, colors);
-    setSpecificButtonColor(createColorMap());
+    const colorMap = createColorMap();
+    const colors = Object.keys(colorMap).map((name) => ({ name }));
+    renderColors(list, colors, colorMap);
 });
