@@ -170,6 +170,28 @@ def get_my_groups(token_data: dict = Depends(verify_token)):
         return {"groups": groups}
     finally:
         db.close()
+        
+@app.get("/my-tasks/all")
+def get_all_my_tasks(token_data: dict = Depends(verify_token)):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute("""
+                SELECT t.id, t.title, t.due_date, t.group_id,
+                       ta.status, ta.user_id,
+                       g.name AS group_name,
+                       gm.color
+                FROM tasks t
+                JOIN task_assignments ta ON t.id = ta.task_id
+                JOIN groups_existing g ON t.group_id = g.id
+                JOIN group_members gm ON g.id = gm.group_id AND gm.user_id = ta.user_id
+                WHERE ta.user_id = %s
+            """, (token_data["user_id"],))
+            tasks = cursor.fetchall()
+
+        return {"tasks": tasks}
+    finally:
+        db.close()
 
 @app.get("/my-tasks/{group_id}")
 def get_my_tasks_for_group(group_id: int, token_data: dict = Depends(verify_token)):
