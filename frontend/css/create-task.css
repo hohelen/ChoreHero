@@ -1,0 +1,16 @@
+.form-comp input {
+    margin: 0;
+}
+
+.error-msg {
+    min-height: 80px;
+    margin-top: 40px;
+}
+
+.error-msg p {
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 600;
+    font-size: 30px;
+    text-align: center;
+    color: #a59484;
+}
