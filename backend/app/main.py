@@ -69,6 +69,10 @@ class CreateTaskRequest(BaseModel):
     group_id: int
     title: str
 
+class UpdateGroupColorRequest(BaseModel):
+    group_id: int
+    color: str
+
 @app.post("/register")
 def register(data: RegisterRequest):
     db = get_db()
@@ -170,7 +174,7 @@ def get_my_groups(token_data: dict = Depends(verify_token)):
         return {"groups": groups}
     finally:
         db.close()
-        
+
 @app.get("/my-tasks/all")
 def get_all_my_tasks(token_data: dict = Depends(verify_token)):
     db = get_db()
@@ -386,3 +390,21 @@ def update_task_status(data: UpdateTaskStatusRequest, token_data: dict = Depends
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         db.close()
+
+@app.post("/update-group-color")
+def update_group_color(data: UpdateGroupColorRequest, token_data: dict = Depends(verify_token)):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(
+                "UPDATE group_members SET color = %s WHERE group_id = %s AND user_id = %s",
+                (data.color, data.group_id, token_data["user_id"])
+            )
+        db.commit()
+        return {"message": "Color updated successfully"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        db.close()
+
