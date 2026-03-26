@@ -7,21 +7,23 @@
         <script src="../js/api/auth.js"></script>
         <script src="../js/pages/create-group.js"></script>
     </head>
-    <body>
-        <div class="general-header titled-general-header">
-            <a href="create-join-group.html">
-                <img src="../assets/back-arrow.png" alt="Back Arrow" />
+    <body class="center-page">
+        <div class="title-row">
+            <a href="create-join-group.html" class="navbar-icon">
+                <img class="back-icon" src="../assets/back-arrow.png" alt="Back" />
             </a>
-            <h1 class="create-group-title">Create Group</h1>
+            <h2 id="page-title">Create Group</h2>
+            <div class="spacer"></div>
         </div>
-        <div class="center-page">
-            <form id="create-group-form">
-                <div class="form-comp">
-                    <p class="comp-title">Group Name</p>
-                    <input type="text" id="group-name" placeholder="Group Name" />
-                </div>
-                <input type="button" class="submit-button" value="Create Group" onclick="createGroup()" />
-            </form>
-        </div>
+        <form id="create-group-form">
+            <div class="form-comp">
+                <p class="comp-title">Group Name</p>
+                <input type="text" id="group-name" placeholder="Group Name" />
+            </div>
+            <div class="error-msg">
+                <p id="error-msg"></p>
+            </div>
+            <input type="button" class="submit-button" value="Create Group" onclick="createGroup()" />
+        </form>
     </body>
 </html>
