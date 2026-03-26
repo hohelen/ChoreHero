@@ -302,7 +302,7 @@ def get_invite_code(group_id: int, token_data: dict = Depends(verify_token)):
         db.close()
 
 def generate_invite_code():
-    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
 
 @app.post("/create-group")
 def create_group(data: CreateGroupRequest, token_data: dict = Depends(verify_token)):
