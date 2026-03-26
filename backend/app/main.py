@@ -198,16 +198,16 @@ def get_all_my_tasks(token_data: dict = Depends(verify_token)):
     try:
         with db.cursor() as cursor:
             cursor.execute("""
-                SELECT t.id, t.title, t.due_date, t.group_id,
-                       ta.status, ta.user_id,
-                       g.name AS group_name,
-                       gm.color
+                SELECT t.id, t.title, ta.due_date, t.group_id,
+                    ta.status, ta.user_id,
+                    g.name AS group_name,
+                    gm.color
                 FROM tasks t
                 JOIN task_assignments ta ON t.id = ta.task_id
                 JOIN groups_existing g ON t.group_id = g.id
                 JOIN group_members gm ON g.id = gm.group_id AND gm.user_id = ta.user_id
                 WHERE ta.user_id = %s
-            """, (token_data["user_id"],))
+            """, (token_data["user_id"],))            
             tasks = cursor.fetchall()
 
         return {"tasks": tasks}
@@ -220,12 +220,12 @@ def get_my_tasks_for_group(group_id: int, token_data: dict = Depends(verify_toke
     try:
         with db.cursor() as cursor:
             cursor.execute("""
-                SELECT t.id, t.title, t.due_date, t.group_id, ta.status, ta.user_id
+                SELECT t.id, t.title, ta.due_date, t.group_id, ta.status, ta.user_id
                 FROM tasks t
                 JOIN task_assignments ta ON t.id = ta.task_id
                 WHERE ta.user_id = %s AND t.group_id = %s
             """, (token_data["user_id"], group_id))
-            tasks = cursor.fetchall()
+        tasks = cursor.fetchall()
 
         return {"tasks": tasks}
     finally:
@@ -237,8 +237,8 @@ def get_group_tasks(group_id: int, token_data: dict = Depends(verify_token)):
     try:
         with db.cursor() as cursor:
             cursor.execute("""
-                SELECT t.id, t.title, t.due_date, t.created_by,
-                       u.full_name AS assigned_to, ta.status, ta.user_id
+                SELECT t.id, t.title, ta.due_date, t.created_by,
+                    u.full_name AS assigned_to, ta.status, ta.user_id
                 FROM tasks t
                 JOIN task_assignments ta ON t.id = ta.task_id
                 JOIN users u ON ta.user_id = u.id
@@ -302,7 +302,7 @@ def get_invite_code(group_id: int, token_data: dict = Depends(verify_token)):
         db.close()
 
 def generate_invite_code():
-    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
 
 @app.post("/create-group")
 def create_group(data: CreateGroupRequest, token_data: dict = Depends(verify_token)):
@@ -318,8 +318,8 @@ def create_group(data: CreateGroupRequest, token_data: dict = Depends(verify_tok
             new_group_id = cursor.lastrowid
 
             cursor.execute(
-                "INSERT INTO group_members (group_id, user_id, role) VALUES (%s, %s, %s)",
-                (new_group_id, token_data["user_id"], "admin")
+                "INSERT INTO group_members (group_id, user_id, role, color) VALUES (%s, %s, %s, %s)",
+                (new_group_id, token_data["user_id"], "admin", "#ec9597")
             )
 
         db.commit()
@@ -420,10 +420,6 @@ def assign_task(data: AssignTaskRequest, token_data: dict = Depends(verify_token
             if cursor.fetchone():
                 raise HTTPException(status_code=400, detail="This task is already assigned to this member on the same date.")
 
-            cursor.execute(
-                "UPDATE tasks SET due_date = %s WHERE id = %s",
-                (data.due_date, data.task_id)
-            )
             cursor.execute(
                 "INSERT INTO task_assignments (task_id, user_id, group_id, status, due_date) VALUES (%s, %s, %s, 'incomplete', %s)",
                 (data.task_id, data.user_id, data.group_id, data.due_date)
