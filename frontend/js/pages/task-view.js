@@ -64,10 +64,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("task").value = taskName;
     document.getElementById("due-date").value = dueDate
         ? (() => {
-              const [year, month, day] = dueDate.split("-");
-              const d = new Date(year, month - 1, day);
-              return d.toLocaleDateString("en-US");
-          })()
+                const [year, month, day] = dueDate.split("-");
+                const d = new Date(year, month - 1, day);
+                return d.toLocaleDateString("en-US");
+            })()
         : "";
     // Check if current user is the assignee
     const currentUser = JSON.parse(localStorage.getItem("user"));

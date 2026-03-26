@@ -43,6 +43,20 @@
     color: #655B53;
 }
 
+#task-view-form textarea {
+    background-color: #D8C4B2;
+    color: #655B53;
+    resize: none;
+
+    
+    
+}
+
 #task-view-form input::placeholder {
     color: #655B53;
 }
+
+#task-view-form textarea::placeholder {
+    color: #655B53;
+}
+
