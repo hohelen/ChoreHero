@@ -1,7 +1,12 @@
-// Creates the following UI User element
-// <li>
-//    <button class="button" onclick="">Name</button>
-// </li>
+requireLogin();
+
+const params = new URLSearchParams(window.location.search);
+const groupId = params.get("id");
+const groupName = params.get("name");
+
+const body = document.getElementById("page-body");
+body.setAttribute("data-group-id", groupId);
+body.setAttribute("data-group-name", groupName);
 
 function createUserListItem(name, isAdmin) {
     const listItem = document.createElement("li");
@@ -18,29 +23,26 @@ function createUserListItem(name, isAdmin) {
     return listItem;
 }
 
-// Renders the group members
-function renderUsers(list, users) {
+function renderUsers(list, members) {
     list.innerHTML = "";
-    users.forEach((user) => {
-        const listItem = createUserListItem(user.name, user.isAdmin);
-        list.appendChild(listItem);
-    });
-}
 
-// Add the group members
-document.addEventListener("DOMContentLoaded", () => {
-    const list = document.querySelector(".buttons-list");
-    if (!list) {
+    if (!members || members.length === 0) {
+        list.innerHTML = `<p class="no-members-msg">No members found in this group.</p>`;
         return;
     }
 
-    // Replace this with a real API call to fetch group members
-    // get name and whether they are admins
-    const users = [
-        { name: "Meiqi Li", isAdmin: true },
-        { name: "Stephanie Nguyen", isAdmin: true },
-        { name: "Helen Ho", isAdmin: false },
-        { name: "Rachel Pu", isAdmin: false },
-    ];
-    renderUsers(list, users);
+    members.forEach((member) => {
+        list.appendChild(createUserListItem(member.full_name, member.role === "admin"));
+    });
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const list = document.querySelector(".buttons-list");
+    if (!list) return;
+
+    const res = await authFetch(`/group/${groupId}/members`);
+    if (!res) return;
+
+    const data = await res.json();
+    renderUsers(list, data.members);
 });

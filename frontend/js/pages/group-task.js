@@ -113,10 +113,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     const list = document.querySelector(".buttons-list");
     if (!list) return;
 
-    const res = await authFetch(`/group/${groupId}/tasks`);
-    if (!res) return;
+    const [tasksRes, groupsRes] = await Promise.all([authFetch(`/group/${groupId}/tasks`), authFetch("/my-groups")]);
 
-    const data = await res.json();
-    renderTasks(list, data.tasks);
-    setTaskCompColor("--color-red-orange");
+    if (!tasksRes || !groupsRes) return;
+
+    const [tasksData, groupsData] = await Promise.all([tasksRes.json(), groupsRes.json()]);
+
+    const group = groupsData.groups.find((g) => g.id === parseInt(groupId));
+    const color = group?.color || null;
+
+    renderTasks(list, tasksData.tasks);
+
+    if (color) {
+        document.querySelectorAll(".task-comp").forEach((taskComp) => {
+            taskComp.style.backgroundColor = color;
+        });
+    }
 });

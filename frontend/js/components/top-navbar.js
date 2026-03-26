@@ -10,10 +10,10 @@ function loadTopNavbar({ groupId, pageTitle, groupName, showBackButton }) {
     // for pages within the manage view, display the back arrow next to page title
     if (showBackButton) {
         titleRow = `<div class="title-row">
-            <a onclick="window.history.back()" class="navbar-icon">
-                <img class="back-icon" src="../../assets/back-arrow.png" alt="Back" />
-            </a>
-            <h2 id="page-title">${pageTitle}</h2>
+        <a href="javascript:void(0)" onclick="window.history.back()" class="navbar-icon">
+            <img class="back-icon" src="../../assets/back-arrow.png" alt="Back" />
+        </a>
+        <h2 id="page-title">${pageTitle}</h2>
         </div>`;
     } else {
         //titleRow = `<h2 id="page-title">${pageTitle}</h2>`;

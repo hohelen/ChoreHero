@@ -1,29 +1,25 @@
-// Creates the following UI task element
-// <li>
-//     <button class="task-comp" onclick="">
-//         <span class="task-comp-date">
-//             <span class="task-comp-day-of-wk">Mon</span>
-//             <span class="task-comp-date-of-mo">2</span>
-//         </span>
-//         <span class="task-comp-detail">
-//             <span class="task-comp-group">Li Residence</span>
-//             <span class="task-comp-name">Take out trash</span>
-//         </span>
-//     </button>
-// </li>
+requireLogin();
 
-function createTaskListItem(isComplete, day, date, group, task) {
+function createTaskListItem(isComplete, day, date, group, task, taskId, userId, dueDate, status, groupId, groupName, groupColor) {
     const listItem = document.createElement("li");
     const button = document.createElement("button");
 
     button.classList.add("task-comp");
     if (isComplete) {
         button.classList.add("task-complete");
-
         const strike = document.createElement("span");
         strike.classList.add("task-comp-strike");
         button.appendChild(strike);
     }
+
+    if (groupColor) {
+        button.style.backgroundColor = groupColor;
+    }
+
+    button.addEventListener("click", () => {
+        const currentUser = JSON.parse(localStorage.getItem("user"));
+        window.location.href = `../pages/task-view.html?id=${groupId}&name=${encodeURIComponent(groupName)}&taskId=${taskId}&task=${encodeURIComponent(task)}&assignee=${encodeURIComponent(currentUser.full_name)}&userId=${currentUser.id}&dueDate=${dueDate}&status=${status}`;
+    });
 
     const dateWrap = document.createElement("span");
     dateWrap.classList.add("task-comp-date");
@@ -60,75 +56,35 @@ function createTaskListItem(isComplete, day, date, group, task) {
     return listItem;
 }
 
-// Renders the group tasks
 function renderTasks(list, tasks) {
     list.innerHTML = "";
-    tasks.forEach((task) => {
-        list.appendChild(createTaskListItem(task.isComplete, task.day, task.date, task.group, task.name));
-    });
-}
 
-// Creates a group to color map - used for setSpecificTaskCompColor
-function createGroupColorMap() {
-    return {
-        "Li Residence": "--color-red-orange",
-        "Nguyen House": "--color-green",
-        "Reitz Union Hotel": "--color-blue",
-        "Gainesville Apt": "--color-yellow",
-        "Ho Residence": "--color-purple",
-    };
-}
-
-// Sets the task component background color
-function setSpecificTaskCompColor(groupColorMap) {
-    const rootStyles = getComputedStyle(document.documentElement);
-
-    document.querySelectorAll(".task-comp").forEach((taskComp) => {
-        const groupName = taskComp.querySelector(".task-comp-group")?.textContent?.trim();
-        const colorVar = groupName ? groupColorMap[groupName] : null;
-
-        if (!colorVar) {
-            return;
-        }
-
-        const resolvedColor = rootStyles.getPropertyValue(colorVar).trim();
-        const color = resolvedColor || colorVar;
-        taskComp.style.backgroundColor = color;
-    });
-}
-
-// Adds the group tasks
-document.addEventListener("DOMContentLoaded", async () => {
-    const list = document.querySelector(".buttons-list");
-    if (!list) {
+    if (!tasks || tasks.length === 0) {
+        list.innerHTML = `<p class="no-tasks-msg">No tasks assigned to you yet.</p>`;
         return;
     }
 
-    // Later: replace this with a real API call
-    // const res = await fetch("/api/tasks");
-    // const tasks = await res.json();
+    tasks.forEach((task) => {
+        const isComplete = task.status === "completed";
+        let dayOfWeek = "",
+            dayOfMonth = "";
+        if (task.due_date) {
+            const [year, month, day] = task.due_date.split("-");
+            const d = new Date(year, month - 1, day);
+            dayOfWeek = d.toLocaleDateString("en-US", { weekday: "short" });
+            dayOfMonth = d.getDate();
+        }
+        list.appendChild(createTaskListItem(isComplete, dayOfWeek, dayOfMonth, task.group_name, task.title, task.id, task.user_id, task.due_date, task.status, task.group_id, task.group_name, task.color));
+    });
+}
 
-    const tasks = [
-        { isComplete: true, day: "Mon", date: "2", group: "Li Residence", name: "Take out trash" },
-        { isComplete: false, day: "Thu", date: "5", group: "Li Residence", name: "Clean garage" },
-        { isComplete: true, day: "Sun", date: "15", group: "Nguyen House", name: "Take out trash" },
-        { isComplete: true, day: "Tue", date: "17", group: "Reitz Union Hotel", name: "Clean fridge" },
-        { isComplete: false, day: "Thu", date: "19", group: "Gainesville Apt", name: "Clean guest bathroom" },
-        { isComplete: true, day: "Fri", date: "20", group: "Ho Residence", name: "Fix garage" },
-        { isComplete: false, day: "Mon", date: "23", group: "Reitz Union Hotel", name: "Clean fridge" },
-        { isComplete: false, day: "Wed", date: "25", group: "Li Residence", name: "Take out trash" },
-        { isComplete: false, day: "Sat", date: "28", group: "Nguyen House", name: "Change bulbs" },
-        { isComplete: true, day: "Mon", date: "2", group: "Li Residence", name: "Take out trash" },
-        { isComplete: false, day: "Thu", date: "5", group: "Li Residence", name: "Clean garage" },
-        { isComplete: true, day: "Sun", date: "15", group: "Nguyen House", name: "Take out trash" },
-        { isComplete: true, day: "Tue", date: "17", group: "Reitz Union Hotel", name: "Clean fridge" },
-        { isComplete: false, day: "Thu", date: "19", group: "Gainesville Apt", name: "Clean guest bathroom" },
-        { isComplete: true, day: "Fri", date: "20", group: "Ho Residence", name: "Fix garage" },
-        { isComplete: false, day: "Mon", date: "23", group: "Reitz Union Hotel", name: "Clean fridge" },
-        { isComplete: false, day: "Wed", date: "25", group: "Li Residence", name: "Take out trash" },
-        { isComplete: false, day: "Sat", date: "28", group: "Nguyen House", name: "Change bulbs" },
-    ];
+document.addEventListener("DOMContentLoaded", async () => {
+    const list = document.querySelector(".buttons-list");
+    if (!list) return;
 
-    renderTasks(list, tasks);
-    setSpecificTaskCompColor(createGroupColorMap());
+    const res = await authFetch("/my-tasks/all");
+    if (!res) return;
+
+    const data = await res.json();
+    renderTasks(list, data.tasks);
 });

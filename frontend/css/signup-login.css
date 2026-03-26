@@ -34,5 +34,18 @@
 }
 
 #login-form .submit-button {
-    margin-top: 380px;
+    margin-top: 340px;
+}
+
+.error-msg {
+    min-height: 40px;
+    margin-top: -20px;
+    margin-bottom: 20px;
+}
+.error-msg p {
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 600;
+    font-size: 30px;
+    text-align: center;
+    color: #a59484;
 }

@@ -4,7 +4,7 @@ async function createGroup() {
     const name = document.getElementById("group-name").value.trim();
 
     if (!name) {
-        alert("Please enter a group name.");
+        document.getElementById("error-msg").textContent = "Please enter a group name";
         return;
     }
 

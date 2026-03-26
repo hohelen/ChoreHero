@@ -9,6 +9,9 @@ import jwt
 import datetime
 import random
 import string
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -37,7 +40,6 @@ def get_db():
     )
 
 def create_token(user_id: int, email: str):
-    """Create a JWT token for the user with no expiry."""
     payload = {
         "user_id": user_id,
         "email": email,
@@ -46,7 +48,6 @@ def create_token(user_id: int, email: str):
     return jwt.encode(payload, SECRET_KEY, algorithm="HS256")
 
 def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
-    """Verify the JWT token sent with a request."""
     try:
         payload = jwt.decode(credentials.credentials, SECRET_KEY, algorithms=["HS256"])
         return payload
@@ -69,6 +70,27 @@ class CreateTaskRequest(BaseModel):
     group_id: int
     title: str
 
+class UpdateGroupColorRequest(BaseModel):
+    group_id: int
+    color: str
+
+class AssignTaskRequest(BaseModel):
+    task_id: int
+    user_id: int
+    due_date: str
+    group_id: int
+
+class UpdateTaskStatusRequest(BaseModel):
+    task_id: int
+    status: str
+
+class SendInviteRequest(BaseModel):
+    group_id: int
+    email: str
+
+class JoinGroupRequest(BaseModel):
+    invite_code: str
+
 @app.post("/register")
 def register(data: RegisterRequest):
     db = get_db()
@@ -86,7 +108,6 @@ def register(data: RegisterRequest):
             new_user_id = cursor.lastrowid
 
         db.commit()
-
         token = create_token(new_user_id, data.email)
 
         return {
@@ -171,6 +192,28 @@ def get_my_groups(token_data: dict = Depends(verify_token)):
     finally:
         db.close()
 
+@app.get("/my-tasks/all")
+def get_all_my_tasks(token_data: dict = Depends(verify_token)):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute("""
+                SELECT t.id, t.title, t.due_date, t.group_id,
+                       ta.status, ta.user_id,
+                       g.name AS group_name,
+                       gm.color
+                FROM tasks t
+                JOIN task_assignments ta ON t.id = ta.task_id
+                JOIN groups_existing g ON t.group_id = g.id
+                JOIN group_members gm ON g.id = gm.group_id AND gm.user_id = ta.user_id
+                WHERE ta.user_id = %s
+            """, (token_data["user_id"],))
+            tasks = cursor.fetchall()
+
+        return {"tasks": tasks}
+    finally:
+        db.close()
+
 @app.get("/my-tasks/{group_id}")
 def get_my_tasks_for_group(group_id: int, token_data: dict = Depends(verify_token)):
     db = get_db()
@@ -187,7 +230,7 @@ def get_my_tasks_for_group(group_id: int, token_data: dict = Depends(verify_toke
         return {"tasks": tasks}
     finally:
         db.close()
-        
+
 @app.get("/group/{group_id}/tasks")
 def get_group_tasks(group_id: int, token_data: dict = Depends(verify_token)):
     db = get_db()
@@ -204,6 +247,57 @@ def get_group_tasks(group_id: int, token_data: dict = Depends(verify_token)):
             tasks = cursor.fetchall()
 
         return {"tasks": tasks}
+    finally:
+        db.close()
+
+@app.get("/group/{group_id}/all-tasks")
+def get_all_group_tasks(group_id: int, token_data: dict = Depends(verify_token)):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute("""
+                SELECT id, title, due_date, created_by
+                FROM tasks
+                WHERE group_id = %s
+            """, (group_id,))
+            tasks = cursor.fetchall()
+
+        return {"tasks": tasks}
+    finally:
+        db.close()
+
+@app.get("/group/{group_id}/members")
+def get_group_members(group_id: int, token_data: dict = Depends(verify_token)):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute("""
+                SELECT u.id, u.full_name, gm.role
+                FROM users u
+                JOIN group_members gm ON u.id = gm.user_id
+                WHERE gm.group_id = %s
+            """, (group_id,))
+            members = cursor.fetchall()
+
+        return {"members": members}
+    finally:
+        db.close()
+
+@app.get("/group/{group_id}/invite-code")
+def get_invite_code(group_id: int, token_data: dict = Depends(verify_token)):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(
+                "SELECT invite_code, name FROM groups_existing WHERE id = %s",
+                (group_id,)
+            )
+            group = cursor.fetchone()
+
+        if not group:
+            raise HTTPException(status_code=404, detail="Group not found")
+
+        return {"invite_code": group["invite_code"], "group_name": group["name"]}
     finally:
         db.close()
 
@@ -245,6 +339,43 @@ def create_group(data: CreateGroupRequest, token_data: dict = Depends(verify_tok
     finally:
         db.close()
 
+@app.post("/join-group")
+def join_group(data: JoinGroupRequest, token_data: dict = Depends(verify_token)):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(
+                "SELECT id, name FROM groups_existing WHERE invite_code = %s",
+                (data.invite_code,)
+            )
+            group = cursor.fetchone()
+
+            if not group:
+                raise HTTPException(status_code=404, detail="Invalid invite code.")
+
+            cursor.execute(
+                "SELECT * FROM group_members WHERE group_id = %s AND user_id = %s",
+                (group["id"], token_data["user_id"])
+            )
+            if cursor.fetchone():
+                raise HTTPException(status_code=400, detail="You are already a member of this group.")
+
+            cursor.execute(
+                "INSERT INTO group_members (group_id, user_id, role) VALUES (%s, %s, %s)",
+                (group["id"], token_data["user_id"], "member")
+            )
+
+        db.commit()
+        return {"message": "Successfully joined group", "group": {"id": group["id"], "name": group["name"]}}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        db.close()
+
 @app.post("/create-task")
 def create_task(data: CreateTaskRequest, token_data: dict = Depends(verify_token)):
     db = get_db()
@@ -273,80 +404,41 @@ def create_task(data: CreateTaskRequest, token_data: dict = Depends(verify_token
     finally:
         db.close()
 
-@app.post("/logout")
-def logout():
-    return {"message": "Logged out successfully"}
-
-@app.get("/group/{group_id}/members")
-def get_group_members(group_id: int, token_data: dict = Depends(verify_token)):
-    db = get_db()
-    try:
-        with db.cursor() as cursor:
-            cursor.execute("""
-                SELECT u.id, u.full_name, gm.role
-                FROM users u
-                JOIN group_members gm ON u.id = gm.user_id
-                WHERE gm.group_id = %s
-            """, (group_id,))
-            members = cursor.fetchall()
-
-        return {"members": members}
-    finally:
-        db.close()
-
-@app.get("/group/{group_id}/all-tasks")
-def get_all_group_tasks(group_id: int, token_data: dict = Depends(verify_token)):
-    db = get_db()
-    try:
-        with db.cursor() as cursor:
-            cursor.execute("""
-                SELECT id, title, due_date, created_by
-                FROM tasks
-                WHERE group_id = %s
-            """, (group_id,))
-            tasks = cursor.fetchall()
-
-        return {"tasks": tasks}
-    finally:
-        db.close()
-
-class AssignTaskRequest(BaseModel):
-    task_id: int
-    user_id: int
-    due_date: str
-
-class AssignTaskRequest(BaseModel):
-    task_id: int
-    user_id: int
-    due_date: str
-    group_id: int
-
 @app.post("/assign-task")
 def assign_task(data: AssignTaskRequest, token_data: dict = Depends(verify_token)):
     db = get_db()
     try:
+        due_date = datetime.datetime.strptime(data.due_date, "%Y-%m-%d").date()
+        if due_date < datetime.date.today():
+            raise HTTPException(status_code=400, detail="Due date cannot be in the past.")
+
         with db.cursor() as cursor:
+            cursor.execute(
+                "SELECT * FROM task_assignments WHERE task_id = %s AND user_id = %s AND due_date = %s",
+                (data.task_id, data.user_id, data.due_date)
+            )
+            if cursor.fetchone():
+                raise HTTPException(status_code=400, detail="This task is already assigned to this member on the same date.")
+
             cursor.execute(
                 "UPDATE tasks SET due_date = %s WHERE id = %s",
                 (data.due_date, data.task_id)
             )
             cursor.execute(
-                "REPLACE INTO task_assignments (task_id, user_id, group_id, status) VALUES (%s, %s, %s, 'incomplete')",
-                (data.task_id, data.user_id, data.group_id)
+                "INSERT INTO task_assignments (task_id, user_id, group_id, status, due_date) VALUES (%s, %s, %s, 'incomplete', %s)",
+                (data.task_id, data.user_id, data.group_id, data.due_date)
             )
-        db.commit()
 
+        db.commit()
         return {"message": "Task assigned successfully"}
 
+    except HTTPException:
+        raise
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         db.close()
-
-class UpdateTaskStatusRequest(BaseModel):
-    task_id: int
-    status: str
 
 @app.post("/update-task-status")
 def update_task_status(data: UpdateTaskStatusRequest, token_data: dict = Depends(verify_token)):
@@ -364,3 +456,78 @@ def update_task_status(data: UpdateTaskStatusRequest, token_data: dict = Depends
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         db.close()
+
+@app.post("/update-group-color")
+def update_group_color(data: UpdateGroupColorRequest, token_data: dict = Depends(verify_token)):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(
+                "UPDATE group_members SET color = %s WHERE group_id = %s AND user_id = %s",
+                (data.color, data.group_id, token_data["user_id"])
+            )
+        db.commit()
+        return {"message": "Color updated successfully"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        db.close()
+
+@app.post("/send-invite")
+def send_invite(data: SendInviteRequest, token_data: dict = Depends(verify_token)):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(
+                "SELECT invite_code, name FROM groups_existing WHERE id = %s",
+                (data.group_id,)
+            )
+            group = cursor.fetchone()
+
+            cursor.execute(
+                "SELECT full_name FROM users WHERE id = %s",
+                (token_data["user_id"],)
+            )
+            sender = cursor.fetchone()
+
+        if not group or not sender:
+            raise HTTPException(status_code=404, detail="Group or user not found")
+
+        sender_name = sender["full_name"]
+        group_name = group["name"]
+        invite_code = group["invite_code"]
+
+        msg = MIMEMultipart()
+        msg["From"] = os.getenv("EMAIL_USER")
+        msg["To"] = data.email
+        msg["Subject"] = f"You've been invited to join {group_name} on ChoreHero"
+
+        body = f"""Hello,
+
+You have been invited by {sender_name} to join their group '{group_name}' on ChoreHero.
+
+Use the invite code below to join:
+
+    {invite_code}
+
+See you there!
+
+— The ChoreHero Team"""
+
+        msg.attach(MIMEText(body, "plain"))
+
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(os.getenv("EMAIL_USER"), os.getenv("EMAIL_PASSWORD"))
+            server.sendmail(os.getenv("EMAIL_USER"), data.email, msg.as_string())
+
+        return {"message": f"Invite sent to {data.email}"}
+
+    except smtplib.SMTPException as e:
+        raise HTTPException(status_code=500, detail=f"Failed to send email: {str(e)}")
+    finally:
+        db.close()
+
+@app.post("/logout")
+def logout():
+    return {"message": "Logged out successfully"}

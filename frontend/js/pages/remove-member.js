@@ -55,6 +55,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const content = createPopUpContent("member", memberName);
         renderPopup(popup, content);
         popup.classList.add("is-visible");
+        document.body.classList.add("popup-open");
+        document.documentElement.classList.add("popup-open");
 
         const cancelButton = popup.querySelector(".popup-cancel-btn");
         if (cancelButton) {
@@ -62,8 +64,23 @@ document.addEventListener("DOMContentLoaded", () => {
                 "click",
                 () => {
                     popup.classList.remove("is-visible");
+                    document.body.classList.remove("popup-open");
+                    document.documentElement.classList.remove("popup-open");
                 },
-                { once: true }
+                { once: true },
+            );
+        }
+
+        const actionButton = popup.querySelector(".popup-action-btn");
+        if (actionButton) {
+            actionButton.addEventListener(
+                "click",
+                () => {
+                    popup.classList.remove("is-visible");
+                    document.body.classList.remove("popup-open");
+                    document.documentElement.classList.remove("popup-open");
+                },
+                { once: true },
             );
         }
 
