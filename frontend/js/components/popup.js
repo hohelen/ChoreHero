@@ -51,7 +51,11 @@ function createPopUpContent(type, name) {
 
     const actionButton = document.createElement("button");
     actionButton.classList.add("popup-action-btn");
-    actionButton.textContent = "Remove";
+    if (type == "leave") {
+        actionButton.textContent = "Leave";
+    } else {
+        actionButton.textContent = "Remove";
+    }
     popupButtons.appendChild(actionButton);
 
     return popupContent;
