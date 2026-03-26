@@ -7,7 +7,7 @@ async function signup() {
     const confirmPassword = document.getElementById("confirm-password").value.trim();
 
     if (!full_name || !email || !password || !confirmPassword) {
-        alert("Please fill in all fields.");
+        document.getElementById("error-msg").textContent = "Please fill in all fields";
         return;
     }
 
