@@ -4,7 +4,7 @@ async function joinGroup() {
     const inviteCode = document.getElementById("group-invite-code").value.trim().toUpperCase();
 
     if (!inviteCode) {
-        alert("Please enter an invite code.");
+        document.getElementById("error-msg").textContent = "Please enter an invite code";
         return;
     }
 
