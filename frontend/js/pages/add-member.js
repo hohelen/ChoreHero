@@ -15,10 +15,7 @@ function addMember() {
     var email = emailInput.value.trim();
     if (isValidEmail(email)) {
         // add user to database and display success message
-        document.getElementById("confirmation-msg").textContent = "Successfully added " + email;
-
-        // if user cannot be added, display failure message
-        // document.getElementById("confirmationMsg").textContent = "Failed to added " + email;
+        document.getElementById("confirmation-msg").textContent = "Invite sent to " + email;
     } else {
         document.getElementById("confirmation-msg").textContent = "Please enter a valid email address";
         return;
