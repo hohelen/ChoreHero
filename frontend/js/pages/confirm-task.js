@@ -21,7 +21,7 @@ async function assignTask() {
     const rawDate = document.getElementById("task-date").value;
 
     if (!rawDate) {
-        document.getElementById("error-msg").textContent = "Please select a deadline";
+        document.getElementById("error-msg").textContent = "Please enter a deadline";
         return;
     }
 
