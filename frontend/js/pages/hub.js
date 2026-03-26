@@ -64,7 +64,13 @@ function renderTasks(list, tasks) {
         return;
     }
 
-    tasks.forEach((task) => {
+    const sorted = [...tasks].sort((a, b) => {
+        if (!a.due_date) return 1;
+        if (!b.due_date) return -1;
+        return new Date(a.due_date) - new Date(b.due_date);
+    });
+
+    sorted.forEach((task) => {
         const isComplete = task.status === "completed";
         let dayOfWeek = "",
             dayOfMonth = "";
