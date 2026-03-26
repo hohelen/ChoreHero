@@ -43,7 +43,7 @@ async function addMember() {
     if (res.ok) {
         document.getElementById("confirmation-msg").textContent = `Successfully sent invite to ${email}`;
     } else {
-        document.getElementById("confirmation-msg").textContent = data.detail || "Failed to send invite.";
+        document.getElementById("confirmation-msg").textContent = data.detail || "Failed to send invite";
     }
 }
 
