@@ -5,8 +5,6 @@
         <link rel="stylesheet" href="../../css/global.css" />
         <link rel="stylesheet" href="../../css/manage-view.css" />
         <link rel="stylesheet" href="../../css/popup.css" />
-        <script defer src="../../js/components/popup.js"></script>
-        <script defer src="../../js/pages/leave-group.js"></script>
         <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet" />
     </head>
     <body id="page-body" data-navbar-type="group-specific" data-group-id="" data-group-name="" data-page-title="Manage View" data-current-view="manage-view">
@@ -19,37 +17,38 @@
                 <li>
                     <button class="button" onclick="window.location.href = 'customize-group.html?groupId=1'">Customize Group</button>
                 </li>
-                <!-- Member only buttons -->
-                <li>
-                    <button class="button" onclick="">Leave Group</button>
+                <li class="member-only">
+                    <button class="button" id="leave-group-btn" onclick="">Leave Group</button>
                 </li>
 
-                <!-- Admin only buttons -->
-                <li>
+                <li class="admin-only">
                     <button class="button" onclick="window.location.href = 'create-task.html?groupId=1'">Create Task</button>
                 </li>
-                <li>
+                <li class="admin-only">
                     <button class="button" onclick="window.location.href = 'assign-task.html?groupId=1'">Assign Task</button>
                 </li>
-                <li>
+                <li class="admin-only">
                     <button class="button" onclick="window.location.href = 'add-member.html?groupId=1'">Add Member</button>
                 </li>
-                <li>
+                <li class="admin-only">
                     <button class="button" onclick="window.location.href = 'remove-member.html?groupId=1'">Remove Member</button>
                 </li>
-                <li>
+                <li class="admin-only">
                     <button class="button" onclick="window.location.href = 'add-admin.html?groupId=1'">Add Admin</button>
                 </li>
-                <li>
+                <li class="admin-only">
                     <button class="button" onclick="window.location.href = 'remove-admin.html?groupId=1'">Remove Admin</button>
                 </li>
             </ul>
             <div class="popup"></div>
         </div>
         <div id="bottom-navbar"></div>
+
         <script src="../../js/api/auth.js"></script>
         <script src="../../js/pages/manage-view.js"></script>
         <script src="../../js/components/top-navbar.js"></script>
         <script src="../../js/components/bottom-navbar.js"></script>
+        <script src="../../js/components/popup.js"></script>
+        <script src="../../js/pages/leave-group.js"></script>
     </body>
 </html>
