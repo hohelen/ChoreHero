@@ -49,10 +49,21 @@ function renderStatusControl(isAssignee, currentStatus) {
     statusComp.appendChild(document.createElement("br"));
 }
 
+function autoResizeTextarea(textarea) {
+    if (!textarea) return;
+
+    textarea.style.height = "auto";
+
+    const minHeight = parseFloat(window.getComputedStyle(textarea).minHeight) || 0;
+    const nextHeight = Math.max(textarea.scrollHeight, minHeight);
+    textarea.style.height = `${nextHeight}px`;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams(window.location.search);
     const groupName = params.get("name");
     const taskName = params.get("task");
+    const descriptionText = params.get("description");
     const assignee = params.get("assignee");
     const dueDate = params.get("dueDate");
     const status = params.get("status");
@@ -62,6 +73,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("group").value = groupName;
     document.getElementById("assignee").value = assignee;
     document.getElementById("task").value = taskName;
+    const description = document.getElementById("description");
+    if (description) {
+        description.value = descriptionText ? descriptionText.trim() : "";
+    }
     document.getElementById("due-date").value = dueDate
         ? (() => {
                 const [year, month, day] = dueDate.split("-");
@@ -74,4 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const isAssignee = currentUser && currentUser.id === assigneeUserId;
 
     renderStatusControl(isAssignee, status);
+
+    autoResizeTextarea(description);
+    description?.addEventListener("input", () => autoResizeTextarea(description));
 });
