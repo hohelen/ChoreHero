@@ -1,19 +1,17 @@
-// Show the leave-group confirmation popup from the manage view
 document.addEventListener("DOMContentLoaded", () => {
     const list = document.querySelector(".buttons-list");
     const popup = document.querySelector(".popup");
-    if (!list || !popup) {
-        return;
-    }
+    if (!list || !popup) return;
 
     const leaveButton = Array.from(list.querySelectorAll("button.button")).find((button) => button.textContent.trim() === "Leave Group");
-    if (!leaveButton) {
-        return;
-    }
+    if (!leaveButton) return;
 
     leaveButton.addEventListener("click", () => {
         const pageBody = document.querySelector("body");
-        const groupName = pageBody?.dataset.groupName || "";
+        const params = new URLSearchParams(window.location.search);
+        const groupName = params.get("name") || "";
+        const groupId = params.get("id") || "";
+
         const content = createPopUpContent("leave", groupName);
         renderPopup(popup, content);
         popup.classList.add("is-visible");
@@ -37,15 +35,28 @@ document.addEventListener("DOMContentLoaded", () => {
         if (actionButton) {
             actionButton.addEventListener(
                 "click",
-                () => {
+                async () => {
                     popup.classList.remove("is-visible");
                     document.body.classList.remove("popup-open");
                     document.documentElement.classList.remove("popup-open");
+
+                    const res = await authFetch("/leave-group", {
+                        method: "POST",
+                        body: JSON.stringify({ group_id: parseInt(groupId) }),
+                    });
+
+                    if (!res) return;
+
+                    const data = await res.json();
+
+                    if (res.ok) {
+                        window.location.href = "../../pages/group-view.html";
+                    } else {
+                        alert(data.detail || "Failed to leave group.");
+                    }
                 },
                 { once: true },
             );
         }
-
-        // TODO: Leave button should 1) remove member from the group, 2) close the popup, 3) redirect user to groups view
     });
 });

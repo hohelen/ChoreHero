@@ -100,6 +100,9 @@ class RemoveMemberRequest(BaseModel):
     group_id: int
     user_id: int
 
+class LeaveGroupRequest(BaseModel):
+    group_id: int
+
 @app.post("/register")
 def register(data: RegisterRequest):
     db = get_db()
@@ -336,12 +339,39 @@ def remove_member(data: RemoveMemberRequest, token_data: dict = Depends(verify_t
     db = get_db()
     try:
         with db.cursor() as cursor:
+            # Remove their task assignments for this group
+            cursor.execute(
+                "DELETE FROM task_assignments WHERE user_id = %s AND group_id = %s",
+                (data.user_id, data.group_id)
+            )
+            # Remove them from the group
             cursor.execute(
                 "DELETE FROM group_members WHERE group_id = %s AND user_id = %s",
                 (data.group_id, data.user_id)
             )
         db.commit()
         return {"message": "Member removed successfully"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        db.close()
+
+@app.post("/leave-group")
+def leave_group(data: LeaveGroupRequest, token_data: dict = Depends(verify_token)):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(
+                "DELETE FROM task_assignments WHERE user_id = %s AND group_id = %s",
+                (token_data["user_id"], data.group_id)
+            )
+            cursor.execute(
+                "DELETE FROM group_members WHERE group_id = %s AND user_id = %s",
+                (data.group_id, token_data["user_id"])
+            )
+        db.commit()
+        return {"message": "Left group successfully"}
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
