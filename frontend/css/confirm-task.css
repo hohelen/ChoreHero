@@ -20,3 +20,12 @@
     text-align: center;
     color: #a59484;
 }
+
+* {
+    box-sizing: border-box;
+}
+
+#task-date {
+    width: 850px;
+    height: 135px;
+}
