@@ -1,16 +1,21 @@
-// Creates the following UI User element
-// <li>
-//    <button class="button" onclick="AddAdmin()">Name<img class="add-icon" src="../../assets/add-icon.png" alt="Add Admin" /></button>
-// </li>
+requireLogin();
 
-function createUserListItem(name) {
+const params = new URLSearchParams(window.location.search);
+const groupId = params.get("id");
+const groupName = params.get("name");
+
+const body = document.getElementById("page-body");
+body.setAttribute("data-group-id", groupId);
+body.setAttribute("data-group-name", groupName);
+
+function createUserListItem(userId, name) {
     const listItem = document.createElement("li");
     const button = document.createElement("button");
     button.classList.add("button");
     button.textContent = name;
+    button.dataset.userId = userId;
 
-    // Add click event listener to the button to add the user as an admin when clicked
-    button.addEventListener("click", () => addAdmin(name));
+    button.addEventListener("click", () => addAdmin(userId, name, button, listItem));
 
     const addIcon = document.createElement("img");
     addIcon.src = "../../assets/add-icon.png";
@@ -21,25 +26,50 @@ function createUserListItem(name) {
     return listItem;
 }
 
-// Renders the group members
-function renderUsers(list, users) {
+function renderUsers(list, members) {
     list.innerHTML = "";
-    users.forEach((user) => {
-        const listItem = createUserListItem(user.name);
-        list.appendChild(listItem);
+
+    if (!members || members.length === 0) {
+        list.innerHTML = `<p class="no-members-msg">No members to promote.</p>`;
+        return;
+    }
+
+    members.forEach((member) => {
+        list.appendChild(createUserListItem(member.id, member.full_name));
     });
 }
 
-// Add the group members
-document.addEventListener("DOMContentLoaded", () => {
-    const list = document.querySelector(".buttons-list");
-    if (!list) {
-        return;
-    }
-    // TODO: replace this with real API call to fetch all group members who aren't admins
-    const users = [{ name: "Stephanie Nguyen" }, { name: "Helen Ho" }, { name: "Rachel Pu" }];
-    renderUsers(list, users);
-});
+async function addAdmin(userId, name, button, listItem) {
+    const res = await authFetch("/update-member-role", {
+        method: "POST",
+        body: JSON.stringify({
+            group_id: parseInt(groupId),
+            user_id: userId,
+            role: "admin",
+        }),
+    });
 
-// TODO: Adds the user as an admin when the button is clicked
-function addAdmin() {}
+    if (!res) return;
+
+    const data = await res.json();
+
+    if (res.ok) {
+        listItem.remove();
+    } else {
+        alert(data.detail || "Failed to add admin.");
+    }
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const list = document.querySelector(".buttons-list");
+    if (!list) return;
+
+    const res = await authFetch(`/group/${groupId}/members`);
+    if (!res) return;
+
+    const data = await res.json();
+
+    // Only show members, not admins
+    const members = data.members.filter((m) => m.role === "member");
+    renderUsers(list, members);
+});

@@ -91,6 +91,15 @@ class SendInviteRequest(BaseModel):
 class JoinGroupRequest(BaseModel):
     invite_code: str
 
+class UpdateMemberRoleRequest(BaseModel):
+    group_id: int
+    user_id: int
+    role: str
+    
+class RemoveMemberRequest(BaseModel):
+    group_id: int
+    user_id: int
+
 @app.post("/register")
 def register(data: RegisterRequest):
     db = get_db()
@@ -225,7 +234,7 @@ def get_my_tasks_for_group(group_id: int, token_data: dict = Depends(verify_toke
                 JOIN task_assignments ta ON t.id = ta.task_id
                 WHERE ta.user_id = %s AND t.group_id = %s
             """, (token_data["user_id"], group_id))
-        tasks = cursor.fetchall()
+            tasks = cursor.fetchall()
 
         return {"tasks": tasks}
     finally:
@@ -280,6 +289,62 @@ def get_group_members(group_id: int, token_data: dict = Depends(verify_token)):
             members = cursor.fetchall()
 
         return {"members": members}
+    finally:
+        db.close()
+@app.get("/group/{group_id}/admins")
+def get_group_admins(group_id: int, token_data: dict = Depends(verify_token)):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(
+                "SELECT created_by FROM groups_existing WHERE id = %s",
+                (group_id,)
+            )
+            group = cursor.fetchone()
+
+            cursor.execute("""
+                SELECT u.id, u.full_name, gm.role
+                FROM users u
+                JOIN group_members gm ON u.id = gm.user_id
+                WHERE gm.group_id = %s AND gm.role = 'admin'
+            """, (group_id,))
+            admins = cursor.fetchall()
+
+        return {"admins": admins, "created_by": group["created_by"]}
+    finally:
+        db.close()
+
+@app.post("/update-member-role")
+def update_member_role(data: UpdateMemberRoleRequest, token_data: dict = Depends(verify_token)):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(
+                "UPDATE group_members SET role = %s WHERE group_id = %s AND user_id = %s",
+                (data.role, data.group_id, data.user_id)
+            )
+        db.commit()
+        return {"message": "Role updated successfully"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        db.close()
+        
+@app.post("/remove-member")
+def remove_member(data: RemoveMemberRequest, token_data: dict = Depends(verify_token)):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(
+                "DELETE FROM group_members WHERE group_id = %s AND user_id = %s",
+                (data.group_id, data.user_id)
+            )
+        db.commit()
+        return {"message": "Member removed successfully"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
     finally:
         db.close()
 
