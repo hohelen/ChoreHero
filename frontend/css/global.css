@@ -161,6 +161,11 @@ html {
     width: 100%;
     max-width: 800px;
 }
+#group-name {
+    /* makes sure group name stays on one line */
+    white-space: nowrap;
+    overflow: hidden;
+}
 /* contains back button and page title */
 .title-row {
     display: grid;
