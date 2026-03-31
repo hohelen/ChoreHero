@@ -83,6 +83,7 @@ class AssignTaskRequest(BaseModel):
 class UpdateTaskStatusRequest(BaseModel):
     task_id: int
     status: str
+    due_date: str
 
 class SendInviteRequest(BaseModel):
     group_id: int
@@ -537,8 +538,8 @@ def update_task_status(data: UpdateTaskStatusRequest, token_data: dict = Depends
     try:
         with db.cursor() as cursor:
             cursor.execute(
-                "UPDATE task_assignments SET status = %s WHERE task_id = %s AND user_id = %s",
-                (data.status, data.task_id, token_data["user_id"])
+                "UPDATE task_assignments SET status = %s WHERE task_id = %s AND user_id = %s AND due_date = %s",
+                (data.status, data.task_id, token_data["user_id"], data.due_date)
             )
         db.commit()
         return {"message": "Status updated successfully"}
@@ -547,7 +548,7 @@ def update_task_status(data: UpdateTaskStatusRequest, token_data: dict = Depends
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         db.close()
-
+        
 @app.post("/update-group-color")
 def update_group_color(data: UpdateGroupColorRequest, token_data: dict = Depends(verify_token)):
     db = get_db()

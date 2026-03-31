@@ -4,6 +4,7 @@ async function updateStatus(event) {
 
     const params = new URLSearchParams(window.location.search);
     const taskId = params.get("taskId");
+    const dueDate = params.get("dueDate");
     const statusButton = document.getElementById("status-button");
     if (!statusButton) return;
 
@@ -12,7 +13,11 @@ async function updateStatus(event) {
 
     const res = await authFetch(`/update-task-status`, {
         method: "POST",
-        body: JSON.stringify({ task_id: parseInt(taskId), status: newStatus }),
+        body: JSON.stringify({
+            task_id: parseInt(taskId),
+            status: newStatus,
+            due_date: dueDate,
+        }),
     });
 
     if (res && res.ok) {
@@ -79,10 +84,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     document.getElementById("due-date").value = dueDate
         ? (() => {
-                const [year, month, day] = dueDate.split("-");
-                const d = new Date(year, month - 1, day);
-                return d.toLocaleDateString("en-US");
-            })()
+              const [year, month, day] = dueDate.split("-");
+              const d = new Date(year, month - 1, day);
+              return d.toLocaleDateString("en-US");
+          })()
         : "";
     // Check if current user is the assignee
     const currentUser = JSON.parse(localStorage.getItem("user"));
