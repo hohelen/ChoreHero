@@ -1,7 +1,7 @@
 // general top navbar (home button, group name, hub button, page title)
 function loadTopNavbar({ groupId, pageTitle, groupName, showBackButton }) {
     var container = document.getElementById("top-navbar");
-    var titlerow;
+    var titleRow;
     if (!container) {
         console.error("Top navbar container not found");
         return;
@@ -70,6 +70,11 @@ function loadHubNavbar({ pageTitle }) {
         console.error("Navbar container not found");
         return;
     }
+    var titleRow = `<div class="title-row">
+        <div class="spacer"></div>
+        <h2 id="page-title">All Tasks</h2>
+        <div class="spacer"></div>
+    </div>`;
     container.innerHTML = `
         <nav class="top-navbar">
             <div class="nav-row">
@@ -82,7 +87,7 @@ function loadHubNavbar({ pageTitle }) {
                 </a>
             </div>
             <hr />
-            <h2 id="page-title">All Tasks</h2>
+            ${titleRow}
         </nav>
     `;
 }
