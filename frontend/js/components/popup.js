@@ -18,7 +18,8 @@ function createPopUpContent(type, name) {
 
     const removeIcon = document.createElement("img");
     removeIcon.classList.add("popup-remove-icon");
-    removeIcon.src = "../../assets/remove-icon.png";
+    const assetBase = window.location.pathname.includes("/pages/group/") ? "../../assets" : "../assets";
+    removeIcon.src = `${assetBase}/remove-icon.png`;
     popupContent.appendChild(removeIcon);
 
     const popupQuestion = document.createElement("span");
@@ -29,10 +30,12 @@ function createPopUpContent(type, name) {
         popupQuestion.innerHTML = "Are you sure you want to <br> remove this admin's perms?";
     } else if (type == "leave") {
         popupQuestion.innerHTML = "Are you sure you want <br> to leave this group?";
+    } else if (type == "task") {
+        popupQuestion.innerHTML = "Are you sure you want <br> to delete this task?";
     } else {
-        alert('Invalid type for popup. Please enter "member", "admin", or "leave".');
+        alert('Invalid type for popup. Please enter "member", "admin", "leave", or "task".');
     }
-    
+
     popupContent.appendChild(popupQuestion);
 
     const popupName = document.createElement("span");
@@ -53,6 +56,8 @@ function createPopUpContent(type, name) {
     actionButton.classList.add("popup-action-btn");
     if (type == "leave") {
         actionButton.textContent = "Leave";
+    } else if (type == "task") {
+        actionButton.textContent = "Delete";
     } else {
         actionButton.textContent = "Remove";
     }

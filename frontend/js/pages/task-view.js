@@ -64,8 +64,9 @@ function autoResizeTextarea(textarea) {
     textarea.style.height = `${nextHeight}px`;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const params = new URLSearchParams(window.location.search);
+    const groupId = params.get("id");
     const groupName = params.get("name");
     const taskName = params.get("task");
     const descriptionText = params.get("description");
@@ -95,6 +96,64 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderStatusControl(isAssignee, status);
 
+    if (groupId) {
+        const res = await authFetch("/my-groups");
+        if (res) {
+            const data = await res.json();
+            const group = data.groups.find((g) => g.id === parseInt(groupId));
+            if (group && group.role !== "admin") {
+                document.querySelectorAll(".admin-only").forEach((el) => {
+                    el.style.display = "none";
+                });
+            } else if (group && group.role === "admin") {
+                document.querySelectorAll(".member-only").forEach((el) => {
+                    el.style.display = "none";
+                });
+            }
+        }
+    }
+
     autoResizeTextarea(description);
     description?.addEventListener("input", () => autoResizeTextarea(description));
+
+    const deleteButton = document.querySelector(".delete-task-btn");
+    const popup = document.querySelector(".popup");
+    if (deleteButton && popup) {
+        deleteButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            const taskField = document.getElementById("task");
+            const taskLabel = taskField?.value?.trim() || taskName || "";
+            const content = createPopUpContent("task", taskLabel);
+            renderPopup(popup, content);
+            popup.classList.add("is-visible");
+            document.body.classList.add("popup-open");
+            document.documentElement.classList.add("popup-open");
+
+            const cancelButton = popup.querySelector(".popup-cancel-btn");
+            if (cancelButton) {
+                cancelButton.addEventListener(
+                    "click",
+                    () => {
+                        popup.classList.remove("is-visible");
+                        document.body.classList.remove("popup-open");
+                        document.documentElement.classList.remove("popup-open");
+                    },
+                    { once: true },
+                );
+            }
+
+            const actionButton = popup.querySelector(".popup-action-btn");
+            if (actionButton) {
+                actionButton.addEventListener(
+                    "click",
+                    () => {
+                        popup.classList.remove("is-visible");
+                        document.body.classList.remove("popup-open");
+                        document.documentElement.classList.remove("popup-open");
+                    },
+                    { once: true },
+                );
+            }
+        });
+    }
 });

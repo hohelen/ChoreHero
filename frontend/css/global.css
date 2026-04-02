@@ -281,3 +281,13 @@ html {
     width: 75px;
     height: auto;
 }
+
+.delete-task-btn {
+    background: none;
+    border: none;
+}
+
+.delete-task-icon {
+    height: 70px;
+    width: auto;
+}
