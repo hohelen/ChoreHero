@@ -69,7 +69,8 @@ class CreateGroupRequest(BaseModel):
 class CreateTaskRequest(BaseModel):
     group_id: int
     title: str
-
+    description: str = ""
+    
 class UpdateGroupColorRequest(BaseModel):
     group_id: int
     color: str
@@ -103,6 +104,10 @@ class RemoveMemberRequest(BaseModel):
 
 class LeaveGroupRequest(BaseModel):
     group_id: int
+
+class DeleteTaskAssignmentRequest(BaseModel):
+    task_id: int
+    due_date: str
 
 @app.post("/register")
 def register(data: RegisterRequest):
@@ -211,7 +216,7 @@ def get_all_my_tasks(token_data: dict = Depends(verify_token)):
     try:
         with db.cursor() as cursor:
             cursor.execute("""
-                SELECT t.id, t.title, ta.due_date, t.group_id,
+                SELECT t.id, t.title, t.description, ta.due_date, t.group_id,
                     ta.status, ta.user_id,
                     g.name AS group_name,
                     gm.color
@@ -233,7 +238,7 @@ def get_my_tasks_for_group(group_id: int, token_data: dict = Depends(verify_toke
     try:
         with db.cursor() as cursor:
             cursor.execute("""
-                SELECT t.id, t.title, ta.due_date, t.group_id, ta.status, ta.user_id
+                SELECT t.id, t.title, t.description, ta.due_date, t.group_id, ta.status, ta.user_id
                 FROM tasks t
                 JOIN task_assignments ta ON t.id = ta.task_id
                 WHERE ta.user_id = %s AND t.group_id = %s
@@ -250,7 +255,7 @@ def get_group_tasks(group_id: int, token_data: dict = Depends(verify_token)):
     try:
         with db.cursor() as cursor:
             cursor.execute("""
-                SELECT t.id, t.title, ta.due_date, t.created_by,
+                SELECT t.id, t.title, t.description, ta.due_date, t.created_by,
                     u.full_name AS assigned_to, ta.status, ta.user_id
                 FROM tasks t
                 JOIN task_assignments ta ON t.id = ta.task_id
@@ -269,7 +274,7 @@ def get_all_group_tasks(group_id: int, token_data: dict = Depends(verify_token))
     try:
         with db.cursor() as cursor:
             cursor.execute("""
-                SELECT id, title, due_date, created_by
+                SELECT id, title, description, due_date, created_by
                 FROM tasks
                 WHERE group_id = %s
             """, (group_id,))
@@ -478,8 +483,8 @@ def create_task(data: CreateTaskRequest, token_data: dict = Depends(verify_token
     try:
         with db.cursor() as cursor:
             cursor.execute(
-                "INSERT INTO tasks (group_id, title, created_by) VALUES (%s, %s, %s)",
-                (data.group_id, data.title, token_data["user_id"])
+                "INSERT INTO tasks (group_id, title, description, created_by) VALUES (%s, %s, %s, %s)",
+                (data.group_id, data.title, data.description, token_data["user_id"])
             )
             new_task_id = cursor.lastrowid
 
@@ -560,6 +565,23 @@ def update_group_color(data: UpdateGroupColorRequest, token_data: dict = Depends
             )
         db.commit()
         return {"message": "Color updated successfully"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        db.close()
+        
+@app.post("/delete-task-assignment")
+def delete_task_assignment(data: DeleteTaskAssignmentRequest, token_data: dict = Depends(verify_token)):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(
+                "DELETE FROM task_assignments WHERE task_id = %s AND user_id = %s AND due_date = %s",
+                (data.task_id, token_data["user_id"], data.due_date)
+            )
+        db.commit()
+        return {"message": "Task assignment deleted successfully"}
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))

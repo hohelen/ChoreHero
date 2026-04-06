@@ -23,7 +23,7 @@ const body = document.getElementById("page-body");
 body.setAttribute("data-group-id", groupId);
 body.setAttribute("data-group-name", groupName);
 
-function createTaskListItem(isComplete, day, date, assignee, task, taskId, userId, dueDate, status) {
+function createTaskListItem(isComplete, day, date, assignee, task, taskId, userId, dueDate, status, description) {
     const listItem = document.createElement("li");
     const button = document.createElement("button");
 
@@ -36,7 +36,7 @@ function createTaskListItem(isComplete, day, date, assignee, task, taskId, userI
     }
 
     button.addEventListener("click", () => {
-        window.location.href = `../../pages/task-view.html?id=${groupId}&name=${encodeURIComponent(groupName)}&taskId=${taskId}&task=${encodeURIComponent(task)}&assignee=${encodeURIComponent(assignee)}&userId=${userId}&dueDate=${dueDate}&status=${status}`;
+        window.location.href = `../../pages/task-view.html?id=${groupId}&name=${encodeURIComponent(groupName)}&taskId=${taskId}&task=${encodeURIComponent(task)}&description=${encodeURIComponent(description || "")}&assignee=${encodeURIComponent(assignee)}&userId=${userId}&dueDate=${dueDate}&status=${status}`;
     });
 
     const dateWrap = document.createElement("span");
@@ -99,7 +99,7 @@ function renderTasks(list, tasks) {
             dayOfWeek = d.toLocaleDateString("en-US", { weekday: "short" });
             dayOfMonth = d.getDate();
         }
-        list.appendChild(createTaskListItem(isComplete, dayOfWeek, dayOfMonth, task.assigned_to, task.title, task.id, task.user_id, task.due_date, task.status));
+        list.appendChild(createTaskListItem(isComplete, dayOfWeek, dayOfMonth, task.assigned_to, task.title, task.id, task.user_id, task.due_date, task.status, task.description));
     });
 }
 

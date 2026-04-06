@@ -1,6 +1,6 @@
 requireLogin();
 
-function createTaskListItem(isComplete, day, date, group, task, taskId, userId, dueDate, status, groupId, groupName, groupColor) {
+function createTaskListItem(isComplete, day, date, group, task, taskId, userId, dueDate, status, groupId, groupName, groupColor, description) {
     const listItem = document.createElement("li");
     const button = document.createElement("button");
 
@@ -18,7 +18,7 @@ function createTaskListItem(isComplete, day, date, group, task, taskId, userId, 
 
     button.addEventListener("click", () => {
         const currentUser = JSON.parse(localStorage.getItem("user"));
-        window.location.href = `../pages/task-view.html?id=${groupId}&name=${encodeURIComponent(groupName)}&taskId=${taskId}&task=${encodeURIComponent(task)}&assignee=${encodeURIComponent(currentUser.full_name)}&userId=${currentUser.id}&dueDate=${dueDate}&status=${status}`;
+        window.location.href = `task-view.html?id=${groupId}&name=${encodeURIComponent(groupName)}&taskId=${taskId}&task=${encodeURIComponent(task)}&description=${encodeURIComponent(description || "")}&assignee=${encodeURIComponent(currentUser.full_name)}&userId=${currentUser.id}&dueDate=${dueDate}&status=${status}`;
     });
 
     const dateWrap = document.createElement("span");
@@ -80,7 +80,7 @@ function renderTasks(list, tasks) {
             dayOfWeek = d.toLocaleDateString("en-US", { weekday: "short" });
             dayOfMonth = d.getDate();
         }
-        list.appendChild(createTaskListItem(isComplete, dayOfWeek, dayOfMonth, task.group_name, task.title, task.id, task.user_id, task.due_date, task.status, task.group_id, task.group_name, task.color));
+        list.appendChild(createTaskListItem(isComplete, dayOfWeek, dayOfMonth, task.group_name, task.title, task.id, task.user_id, task.due_date, task.status, task.group_id, task.group_name, task.color, task.description));
     });
 }
 

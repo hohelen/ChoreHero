@@ -1,7 +1,7 @@
 requireLogin();
 
 const params = new URLSearchParams(window.location.search);
-const groupId = params.get("id"); // was "groupId"
+const groupId = params.get("id");
 const groupName = params.get("name");
 
 const body = document.getElementById("page-body");
@@ -12,6 +12,7 @@ if (body) {
 
 async function createTask() {
     const title = document.getElementById("task-name").value.trim();
+    const description = document.getElementById("task-description").value.trim();
 
     if (!title) {
         document.getElementById("error-msg").textContent = "Please enter a task name";
@@ -28,6 +29,7 @@ async function createTask() {
         body: JSON.stringify({
             group_id: parseInt(groupId),
             title: title,
+            description: description,
         }),
     });
 

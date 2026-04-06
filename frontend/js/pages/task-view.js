@@ -146,10 +146,31 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (actionButton) {
                 actionButton.addEventListener(
                     "click",
-                    () => {
+                    async () => {
                         popup.classList.remove("is-visible");
                         document.body.classList.remove("popup-open");
                         document.documentElement.classList.remove("popup-open");
+
+                        const taskId = params.get("taskId");
+                        const dueDate = params.get("dueDate");
+
+                        const res = await authFetch("/delete-task-assignment", {
+                            method: "POST",
+                            body: JSON.stringify({
+                                task_id: parseInt(taskId),
+                                due_date: dueDate,
+                            }),
+                        });
+
+                        if (!res) return;
+
+                        const data = await res.json();
+
+                        if (res.ok) {
+                            window.history.back();
+                        } else {
+                            alert(data.detail || "Failed to delete task.");
+                        }
                     },
                     { once: true },
                 );

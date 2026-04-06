@@ -8,7 +8,7 @@ const body = document.getElementById("page-body");
 body.setAttribute("data-group-id", groupId);
 body.setAttribute("data-group-name", groupName);
 
-function createTaskListItem(isComplete, day, date, task, taskId, dueDate, status) {
+function createTaskListItem(isComplete, day, date, task, taskId, dueDate, status, description) {
     const listItem = document.createElement("li");
     const button = document.createElement("button");
 
@@ -22,7 +22,7 @@ function createTaskListItem(isComplete, day, date, task, taskId, dueDate, status
 
     button.addEventListener("click", () => {
         const currentUser = JSON.parse(localStorage.getItem("user"));
-        window.location.href = `../../pages/task-view.html?id=${groupId}&name=${encodeURIComponent(groupName)}&taskId=${taskId}&task=${encodeURIComponent(task)}&assignee=${encodeURIComponent(currentUser.full_name)}&userId=${currentUser.id}&dueDate=${dueDate}&status=${status}`;
+        window.location.href = `../../pages/task-view.html?id=${groupId}&name=${encodeURIComponent(groupName)}&taskId=${taskId}&task=${encodeURIComponent(task)}&description=${encodeURIComponent(description || "")}&assignee=${encodeURIComponent(currentUser.full_name)}&userId=${currentUser.id}&dueDate=${dueDate}&status=${status}`;
     });
 
     const dateWrap = document.createElement("span");
@@ -63,7 +63,6 @@ function renderTasks(list, tasks) {
         return;
     }
 
-    // Sort chronologically by due_date
     const sorted = [...tasks].sort((a, b) => {
         if (!a.due_date) return 1;
         if (!b.due_date) return -1;
@@ -80,7 +79,7 @@ function renderTasks(list, tasks) {
             day_of_week = d.toLocaleDateString("en-US", { weekday: "short" });
             date = d.getDate();
         }
-        list.appendChild(createTaskListItem(isComplete, day_of_week, date, task.title, task.id, task.due_date, task.status));
+        list.appendChild(createTaskListItem(isComplete, day_of_week, date, task.title, task.id, task.due_date, task.status, task.description));
     });
 }
 
