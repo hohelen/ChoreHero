@@ -49,3 +49,33 @@
     text-align: center;
     color: #a59484;
 }
+
+.input-wrapper {
+    position: relative;
+    width: 100%;
+    display: block;
+}
+
+#toggle-password-icon,
+#toggle-confirm-password-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.toggle-password {
+    position: absolute;
+    top: 45%;
+    right: 35px;
+    transform: translateY(-50%);
+    border: none;
+    background: none;
+}
+
+.toggle-confirm-password {
+    position: absolute;
+    top: 43%;
+    right: 35px;
+    transform: translateY(-50%);
+    border: none;
+    background: none;
+}
