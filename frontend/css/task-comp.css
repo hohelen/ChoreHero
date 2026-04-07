@@ -74,3 +74,20 @@
     font-size: 45px;
     color: #3d352f;
 }
+
+.task-date-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    width: 100%;
+    color: #A59484;
+    font-size: 40px;
+    font-weight: 400;
+}
+
+.task-date-divider-line {
+    flex: 1;
+    height: 5px;
+    background-color: #A59484;
+}

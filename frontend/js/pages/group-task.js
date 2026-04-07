@@ -74,6 +74,8 @@ function createTaskListItem(isComplete, day, date, assignee, task, taskId, userI
     return listItem;
 }
 
+
+
 // Renders the group tasks
 function renderTasks(list, tasks) {
     list.innerHTML = "";
@@ -89,6 +91,9 @@ function renderTasks(list, tasks) {
         return new Date(a.due_date) - new Date(b.due_date);
     });
 
+    let currentDividerKey = null;
+    let noDueDateDividerAdded = false;
+
     sorted.forEach((task) => {
         const isComplete = task.status === "completed";
         let dayOfWeek = "",
@@ -96,8 +101,49 @@ function renderTasks(list, tasks) {
         if (task.due_date) {
             const [year, month, day] = task.due_date.split("-");
             const d = new Date(year, month - 1, day);
+            const dividerKey = `${year}-${month}`;
+
+            if (dividerKey !== currentDividerKey) {
+                const divider = document.createElement("li");
+                divider.classList.add("task-date-divider");
+
+                const leftLine = document.createElement("span");
+                leftLine.classList.add("task-date-divider-line");
+
+                const label = document.createElement("span");
+                label.textContent = d.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+
+                const rightLine = document.createElement("span");
+                rightLine.classList.add("task-date-divider-line");
+
+                divider.appendChild(leftLine);
+                divider.appendChild(label);
+                divider.appendChild(rightLine);
+                list.appendChild(divider);
+
+                currentDividerKey = dividerKey;
+            }
             dayOfWeek = d.toLocaleDateString("en-US", { weekday: "short" });
             dayOfMonth = d.getDate();
+        } else if (!noDueDateDividerAdded) {
+            const divider = document.createElement("li");
+            divider.classList.add("task-date-divider");
+
+            const leftLine = document.createElement("span");
+            leftLine.classList.add("task-date-divider-line");
+
+            const label = document.createElement("span");
+            label.textContent = "No due date";
+
+            const rightLine = document.createElement("span");
+            rightLine.classList.add("task-date-divider-line");
+
+            divider.appendChild(leftLine);
+            divider.appendChild(label);
+            divider.appendChild(rightLine);
+            list.appendChild(divider);
+
+            noDueDateDividerAdded = true;
         }
         list.appendChild(createTaskListItem(isComplete, dayOfWeek, dayOfMonth, task.assigned_to, task.title, task.id, task.user_id, task.due_date, task.status, task.description));
     });
