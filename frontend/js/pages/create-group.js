@@ -4,7 +4,7 @@ async function createGroup() {
     const name = document.getElementById("group-name").value.trim();
 
     if (!name) {
-        document.getElementById("error-msg").textContent = "Please enter a group name";
+        document.getElementById("error-msg").textContent = "Please enter a group name.";
         return;
     }
 
@@ -20,6 +20,6 @@ async function createGroup() {
     if (res.ok) {
         window.location.href = "group-view.html";
     } else {
-        alert(data.detail || "Failed to create group. Please try again.");
+        document.getElementById("error-msg").textContent = `${data.detail}.` || "Failed to create group. Please try again.";
     }
 }

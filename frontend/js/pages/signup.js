@@ -7,23 +7,23 @@ async function signup() {
     const confirmPassword = document.getElementById("confirm-password").value.trim();
 
     if (!full_name || !email || !password || !confirmPassword) {
-        document.getElementById("error-msg").textContent = "Please fill in all fields";
+        document.getElementById("error-msg").textContent = "Please fill in all fields.";
         return;
     }
 
     if (password !== confirmPassword) {
-        alert("Passwords do not match.");
+        document.getElementById("error-msg").textContent = "Passwords do not match.";
         return;
     }
 
     if (password.length < 8) {
-        alert("Password must be at least 8 characters long.");
+        document.getElementById("error-msg").textContent = "Password must be at least 8 characters long.";
         return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-        alert("Please enter a valid email address.");
+        document.getElementById("error-msg").textContent = "Please enter a valid email address.";
         return;
     }
 
@@ -44,7 +44,7 @@ async function signup() {
             window.location.href = "group-view.html";
         } else {
             // "Email already registered" or other backend errors shown here
-            alert(data.detail || "Sign up failed. Please try again.");
+            document.getElementById("error-msg").textContent = `${data.detail}.` || "Sign up failed. Please try again.";
         }
     } catch (err) {
         alert("Could not connect to the server. Make sure the backend is running.");

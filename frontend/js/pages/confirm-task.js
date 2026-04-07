@@ -21,7 +21,7 @@ async function assignTask() {
     const rawDate = document.getElementById("task-date").value;
 
     if (!rawDate) {
-        document.getElementById("error-msg").textContent = "Please enter a deadline";
+        document.getElementById("error-msg").textContent = "Please enter a deadline.";
         return;
     }
 
@@ -45,6 +45,10 @@ async function assignTask() {
     if (res.ok) {
         window.location.href = `group-task.html?id=${groupId}&name=${encodeURIComponent(groupName)}`;
     } else {
-        alert(data.detail || "Failed to confirm task. Please try again.");
+        if (data.detail === "day is out of range for month") {
+            document.getElementById("error-msg").textContent = "Please enter a valid date.";
+        } else {
+            document.getElementById("error-msg").textContent = data.detail || "Failed to assign task. Please try again.";
+        }
     }
 }

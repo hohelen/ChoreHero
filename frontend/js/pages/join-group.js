@@ -4,7 +4,7 @@ async function joinGroup() {
     const inviteCode = document.getElementById("group-invite-code").value.trim().toUpperCase();
 
     if (!inviteCode) {
-        document.getElementById("error-msg").textContent = "Please enter an invite code";
+        document.getElementById("error-msg").textContent = "Please enter an invite code.";
         return;
     }
 
@@ -20,6 +20,6 @@ async function joinGroup() {
     if (res.ok) {
         window.location.href = "group-view.html";
     } else {
-        alert(data.detail || "Failed to join group. Please try again.");
+        document.getElementById("error-msg").textContent = `${data.detail}` || "Failed to join group. Please try again.";
     }
 }
