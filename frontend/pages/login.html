@@ -25,7 +25,12 @@
                 </div>
                 <div class="form-comp">
                     <p class="comp-title">Password</p>
-                    <input type="password" id="password" placeholder="Password" /><br />
+                    <div class="input-wrapper">
+                        <input type="password" id="password" placeholder="Password" /><br />
+                        <button type="button" class="toggle-password" onclick="togglePassword('password', 'toggle-password-icon')">
+                            <img src="../assets/hide-password-icon.png" alt="Toggle Password" id="toggle-password-icon" />
+                        </button>
+                    </div>
                 </div>
                 <div class="error-msg">
                     <p id="error-msg"></p>
