@@ -33,3 +33,15 @@ async function login() {
         console.error(err);
     }
 }
+
+function togglePassword(inputId, iconId) {
+    var passwordInput = document.getElementById(inputId);
+    var toggleIcon = document.getElementById(iconId);
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleIcon.src = "../assets/show-password-icon.png";
+    } else {
+        passwordInput.type = "password";
+        toggleIcon.src = "../assets/hide-password-icon.png";
+    }
+}
