@@ -15,7 +15,7 @@ async function createTask() {
     const description = document.getElementById("task-description").value.trim();
 
     if (!title) {
-        document.getElementById("error-msg").textContent = "Please enter a task name";
+        document.getElementById("error-msg").textContent = "Please enter a task name.";
         return;
     }
 
@@ -40,6 +40,6 @@ async function createTask() {
     if (res.ok) {
         window.location.href = `group-task.html?id=${groupId}&name=${encodeURIComponent(groupName)}`;
     } else {
-        alert(data.detail || "Failed to create task. Please try again.");
+        document.getElementById("error-msg").textContent = `${data.detail}.` || "Failed to create task. Please try again.";
     }
 }

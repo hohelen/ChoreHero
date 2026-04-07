@@ -5,7 +5,7 @@ async function login() {
     const password = document.getElementById("password").value.trim();
 
     if (!email || !password) {
-        document.getElementById("error-msg").textContent = "Please enter both email and password";
+        document.getElementById("error-msg").textContent = "Please enter both email and password.";
         return;
     }
 
@@ -26,7 +26,7 @@ async function login() {
             window.location.href = "group-view.html";
         } else {
             // "Invalid email or password" shown here
-            alert(data.detail || "Login failed. Please try again.");
+            document.getElementById("error-msg").textContent = `${data.detail}.` || "Login failed. Please try again.";
         }
     } catch (err) {
         alert("Could not connect to the server. Make sure the backend is running.");

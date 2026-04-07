@@ -24,7 +24,7 @@ async function addMember() {
     const email = document.getElementById("email").value.trim();
 
     if (!isValidEmail(email)) {
-        document.getElementById("confirmation-msg").textContent = "Please enter a valid email address";
+        document.getElementById("confirmation-msg").textContent = "Please enter a valid email address.";
         return;
     }
 
@@ -41,9 +41,9 @@ async function addMember() {
     const data = await res.json();
 
     if (res.ok) {
-        document.getElementById("confirmation-msg").textContent = `Successfully sent invite to ${email}`;
+        document.getElementById("confirmation-msg").textContent = `Successfully sent invite to ${email}.`;
     } else {
-        document.getElementById("confirmation-msg").textContent = data.detail || "Failed to send invite";
+        document.getElementById("confirmation-msg").textContent = data.detail || "Failed to send invite.";
     }
 }
 
