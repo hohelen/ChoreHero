@@ -576,10 +576,26 @@ def delete_task_assignment(data: DeleteTaskAssignmentRequest, token_data: dict =
     db = get_db()
     try:
         with db.cursor() as cursor:
-            cursor.execute(
-                "DELETE FROM task_assignments WHERE task_id = %s AND user_id = %s AND due_date = %s",
-                (data.task_id, token_data["user_id"], data.due_date)
-            )
+            cursor.execute("""
+                SELECT gm.role FROM group_members gm
+                JOIN tasks t ON t.group_id = gm.group_id
+                WHERE t.id = %s AND gm.user_id = %s
+            """, (data.task_id, token_data["user_id"]))
+            member = cursor.fetchone()
+
+            is_admin = member and member["role"] == "admin"
+
+            if is_admin:
+                cursor.execute(
+                    "DELETE FROM task_assignments WHERE task_id = %s AND due_date = %s",
+                    (data.task_id, data.due_date)
+                )
+            else:
+                cursor.execute(
+                    "DELETE FROM task_assignments WHERE task_id = %s AND user_id = %s AND due_date = %s",
+                    (data.task_id, token_data["user_id"], data.due_date)
+                )
+
         db.commit()
         return {"message": "Task assignment deleted successfully"}
     except Exception as e:
