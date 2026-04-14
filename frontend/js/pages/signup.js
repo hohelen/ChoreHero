@@ -1,5 +1,4 @@
-const API = "http://127.0.0.1:8000";
-
+const API = "http://10.136.202.228:8000";
 async function signup() {
     const full_name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();

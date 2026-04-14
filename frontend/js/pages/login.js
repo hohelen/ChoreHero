@@ -1,5 +1,4 @@
-const API = "http://127.0.0.1:8000"; // Change to your Railway URL when deployed
-
+const API = "http://10.136.202.228:8000";
 async function login() {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
